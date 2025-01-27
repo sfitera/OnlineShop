@@ -16,6 +16,6 @@ import lombok.*;
 public class Warehouse {
 
     @Id
-    private String product;
-    private long quantity;
+    private Product product;
+    private int quantity;
 }

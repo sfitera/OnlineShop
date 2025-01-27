@@ -19,13 +19,27 @@ public class Order {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
-    private String customerName;
-    private String customerEmail;
-    private String customerAddress;
+    @ManyToOne
+    private User user;
     private double totalPrice;
     private LocalDate orderDate;
     private OrderStatus orderStatus;
     @OneToMany
     private List<OrderItem> orderItems;
 
+    public Order(User user, OrderStatus orderStatus, List<OrderItem> orderItems) {
+        this.user = user;
+        this.totalPrice = setTotalPrice(orderItems);
+        this.orderDate = LocalDate.now();
+        this.orderStatus = orderStatus;
+        this.orderItems = orderItems;
+    }
+
+    private double setTotalPrice(List<OrderItem> orderItems) {
+       double price =0;
+        for (OrderItem orderItem : orderItems) {
+            price += orderItem.getPrice();
+        }
+        return price;
+    }
 }

@@ -10,5 +10,6 @@ public interface UserService {
     User updateUser(User user);
     User deleteUser(Long id);
     User getUser(Long id);
+
     List<User> getUsers();
 }

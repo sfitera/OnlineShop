@@ -1,12 +1,11 @@
 package org.dreamteam.onlineshop.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.dreamteam.onlineshop.model.enums.OrderStatus;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Builder
 @Data
@@ -18,6 +17,7 @@ import java.time.LocalDate;
 public class Order {
 
     @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
     private String customerName;
     private String customerEmail;
@@ -25,7 +25,7 @@ public class Order {
     private double totalPrice;
     private LocalDate orderDate;
     private OrderStatus orderStatus;
-    private OrderItem orderItem;
-
+    @OneToMany
+    private List<OrderItem> orderItems;
 
 }

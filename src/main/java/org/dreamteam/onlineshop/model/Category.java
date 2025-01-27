@@ -1,21 +1,21 @@
 package org.dreamteam.onlineshop.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.UUID;
 
-@Entity
-@Table (name = "categories")
+@Builder
 @Data
+@Entity
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "categories")
 public class Category {
+
     @Id
-    private String id = UUID.randomUUID().toString();
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
 }

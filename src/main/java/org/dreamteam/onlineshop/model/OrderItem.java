@@ -1,9 +1,7 @@
 package org.dreamteam.onlineshop.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Builder
@@ -16,7 +14,9 @@ import lombok.*;
 public class OrderItem {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @OneToOne
     private Product product;
     private int quantity;
     private double price;

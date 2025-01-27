@@ -1,15 +1,17 @@
 package org.dreamteam.onlineshop.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.List;
 
-@Entity(name = "products")
+@Builder
 @Data
-@AllArgsConstructor
+@Entity
+@EqualsAndHashCode
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "products")
 public class Product {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -17,12 +19,17 @@ public class Product {
     @Column(length = 100)
     private String name;
     private Double price;
-    private String image;
-    private String category;
-    private String author;
+    private int quantity;
     private Boolean availability;
+    private String image;
+    @ManyToMany
+    private List<Category> categories;
+    private String author;
     @Column(length = 1000)
     private String description;
+    @OneToOne (cascade = CascadeType.ALL)
+    private OrderItem orderItem;
+
 }
 
 

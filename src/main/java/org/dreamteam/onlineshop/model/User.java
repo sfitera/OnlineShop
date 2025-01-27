@@ -1,9 +1,7 @@
 package org.dreamteam.onlineshop.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.dreamteam.onlineshop.model.enums.UserRole;
 
@@ -17,6 +15,7 @@ import org.dreamteam.onlineshop.model.enums.UserRole;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String userName;
     private String userPassword;

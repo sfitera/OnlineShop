@@ -1,6 +1,5 @@
 package org.dreamteam.onlineshop.repository;
 
-import jdk.jfr.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -24,4 +24,11 @@ public class User {
     private UserRole userRole;
 
 
+    public User(String userName, String userPassword, String userAddress, String userEmail, UserRole userRole) {
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.userAddress = userAddress;
+        this.userEmail = userEmail;
+        this.userRole = userRole;
+    }
 }

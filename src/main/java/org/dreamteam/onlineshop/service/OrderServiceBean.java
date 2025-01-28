@@ -16,34 +16,29 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class OrderServiceBean implements OrderService{
+public class OrderServiceBean implements OrderService {
 
-    private final UserRepository userRepository;
     private final OrderRepository orderRepository;
 
     @Autowired
-    public OrderServiceBean(UserRepository userRepository, OrderRepository orderRepository,OrderItemRepository orderItemRepository, ProductRepository productRepository) {
-        this.userRepository = userRepository;
+    public OrderServiceBean(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
 
     }
 
     @Override
-    public Order addOrder(Long userId,List<OrderItem> orderItems) {
-        var user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        var order = new Order(user,OrderStatus.CREATED,orderItems);
-        return orderRepository.save(order);
+    public void createOrder(Order order) {
+        orderRepository.save(order);
     }
 
     @Override
-    public Order updateOrder(Long orderId, OrderStatus orderStatus) {
+    public void updateOrderStatus(Long orderId, OrderStatus orderStatus) {
         var order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
-        if(orderStatus!= null){
+        if (orderStatus != null) {
             order.setOrderStatus(orderStatus);
+            orderRepository.save(order);
         }
-        return order;
     }
 
     @Override
@@ -53,8 +48,7 @@ public class OrderServiceBean implements OrderService{
         orderRepository.delete(order);
     }
 
-    @Override
-    public Order getOrder(Long orderId) {
+    public Order getOrderById(Long orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
     }
@@ -62,6 +56,25 @@ public class OrderServiceBean implements OrderService{
     @Override
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
+    }
+
+    @Override
+    public List<Order> getOrdersByUserId(Long userId) {
+        return orderRepository.findAllByUserId(userId);
+    }
+
+    @Override
+    public void addOrderItem(Long orderId, OrderItem orderItem) {
+        Order order = getOrderById(orderId);
+        order.getOrderItems().add(orderItem);
+        orderRepository.save(order);
+    }
+
+    @Override
+    public void deleteOrderItem(Long orderId, Long itemId) {
+        Order order = getOrderById(orderId);
+        order.getOrderItems().removeIf(item -> item.getId().equals(itemId));
+        orderRepository.save(order);
     }
 
 }

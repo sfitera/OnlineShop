@@ -24,11 +24,10 @@ public class OrderItem {
     private double itemPrice;
 
 
-    public OrderItem(Order order,Product product, int quantity){
-        this.order = order;
-        this.product=product;
-        this.quantity=quantity;
-        this.itemPrice=setItemPrice(quantity,product);
+    public OrderItem(Product product, int quantity) {
+        this.product = product;
+        this.quantity = quantity;
+        this.itemPrice = setItemPrice(quantity, product);
     }
 
     private double setItemPrice(int quantity, Product product) {

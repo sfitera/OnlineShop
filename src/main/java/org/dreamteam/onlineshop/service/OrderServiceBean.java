@@ -1,6 +1,7 @@
 package org.dreamteam.onlineshop.service;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.dreamteam.onlineshop.model.Order;
 import org.dreamteam.onlineshop.model.OrderItem;
 import org.dreamteam.onlineshop.model.enums.OrderStatus;
@@ -8,14 +9,19 @@ import org.dreamteam.onlineshop.repository.OrderItemRepository;
 import org.dreamteam.onlineshop.repository.OrderRepository;
 import org.dreamteam.onlineshop.repository.ProductRepository;
 import org.dreamteam.onlineshop.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
-
+@Slf4j
+@Service
 public class OrderServiceBean implements OrderService{
 
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
 
+    @Autowired
     public OrderServiceBean(UserRepository userRepository, OrderRepository orderRepository,OrderItemRepository orderItemRepository, ProductRepository productRepository) {
         this.userRepository = userRepository;
         this.orderRepository = orderRepository;

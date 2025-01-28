@@ -1,28 +1,36 @@
 package org.dreamteam.onlineshop.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.List;
 
-@Entity(name = "products")
+@Builder
 @Data
-@AllArgsConstructor
+@Entity
+@EqualsAndHashCode
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "products")
 public class Product {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 100)
+    @Column(nullable = false, length = 250)
     private String name;
+    @Column(nullable = false)
     private Double price;
-    private String image;
-    private String category;
-    private String author;
+    private int quantity;
     private Boolean availability;
-    @Column(length = 1000)
+    private String image;
+    @ManyToMany
+    private List<Category> categories;
+    @Column(nullable = false)
+    private String author;
+    @Column(nullable = false, length = 1000)
     private String description;
-}
+    @OneToOne(cascade = CascadeType.ALL)
+    private OrderItem orderItem;
 
+}
 

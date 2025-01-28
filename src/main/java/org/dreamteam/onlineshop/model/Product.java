@@ -14,22 +14,23 @@ import java.util.List;
 @Table(name = "products")
 public class Product {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 100)
+    @Column(nullable = false, length = 250)
     private String name;
+    @Column(nullable = false)
     private Double price;
     private int quantity;
     private Boolean availability;
     private String image;
     @ManyToMany
     private List<Category> categories;
+    @Column(nullable = false)
     private String author;
-    @Column(length = 1000)
+    @Column(nullable = false, length = 1000)
     private String description;
-    @OneToOne (cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     private OrderItem orderItem;
 
 }
-
 

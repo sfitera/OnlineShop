@@ -21,16 +21,24 @@ public class Product {
     @Column(nullable = false)
     private Double price;
     private int quantity;
-    private Boolean availability;
+    private boolean availability;
     private String image;
-    @ManyToMany
-    private List<Category> categories;
-    @Column(nullable = false)
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private Category category;
     private String author;
     @Column(nullable = false, length = 1000)
     private String description;
-    @OneToOne(cascade = CascadeType.ALL)
-    private OrderItem orderItem;
+
+    public Product(String name, double price, int quantity, boolean availability, String image, Category category, String author, String description) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.availability = availability;
+        this.image = image;
+        this.category = category;
+        this.author = author;
+        this.description = description;
+    }
 
 }
 

@@ -18,14 +18,11 @@ public class OrderItem {
     private Long id;
     @ManyToOne
     private Product product;
-    @ManyToOne
-    private Order order;
     private int quantity;
     private double itemPrice;
 
 
-    public OrderItem(Order order,Product product, int quantity){
-        this.order = order;
+    public OrderItem(Product product, int quantity){
         this.product=product;
         this.quantity=quantity;
         this.itemPrice=setItemPrice(quantity,product);

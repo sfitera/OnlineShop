@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, String> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
 
     // Find all products containing a specific name
     List<Product> findByNameContainingIgnoreCase(String name);
@@ -17,7 +17,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     List<Product> findByCategoryContainingIgnoreCase(String category);
 
     // Find all products by availability
-    List<Product> findByAvailabilityContainingIgnoreCase(Product.Availability availability);
+    List<Product> findByAvailabilityContainingIgnoreCase(Product availability);
 
     // Find all products by author
     List<Product> findByAuthorContainingIgnoreCase(String author);

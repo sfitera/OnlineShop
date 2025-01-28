@@ -8,7 +8,7 @@ import java.util.List;
 public interface ProductService {
 
 
-    Product addProduct(@NonNull String name, @NonNull Double price, String productImage, @NonNull String category, @NonNull String author, Boolean availability, @NonNull String description);
+    Product addProduct(String name, Double price, String productImage, String category, String author, Boolean availability, String description);
     Product updateProduct(String name, Double price, String productImage, String category, String author, Boolean availability, String description);
     Product getProduct(Long id);
     boolean deleteProduct(Long id);

@@ -111,3 +111,6 @@ adding an author in the admin panel
 Additional requirements
 it is necessary to ensure an aesthetic and functional way of presenting data
 data downloaded from users should be pre-validated
+
+
+Commit message template : #20: commit message

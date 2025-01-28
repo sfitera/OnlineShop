@@ -23,8 +23,8 @@ public class OrderItemServiceBean implements OrderItemService {
 
 
     @Override
-    public OrderItem addOrderItem(Product product, int quantity) {
-       var orderItem = new OrderItem(product,quantity);
+    public OrderItem addOrderItem(Order order, Product product, int quantity) {
+       var orderItem = new OrderItem(order,product,quantity);
        orderItemRepository.save(orderItem);
        return orderItem;
     }
@@ -34,6 +34,11 @@ public class OrderItemServiceBean implements OrderItemService {
         var orderItem = orderItemRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Order item not found"));
                 var updatedItem = new OrderItem();
+                if (order!=null){
+                    updatedItem.setOrder(order);
+                } else {
+                    updatedItem.setOrder(orderItem.getOrder());
+                }
                 if(product!=null){
                     updatedItem.setProduct(product);
                 } else {

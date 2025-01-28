@@ -38,7 +38,7 @@ public class Order {
     private double setTotalPrice(List<OrderItem> orderItems) {
        double price =0;
         for (OrderItem orderItem : orderItems) {
-            price += orderItem.getItemPrice();
+            price += orderItem.getPrice();
         }
         return price;
     }

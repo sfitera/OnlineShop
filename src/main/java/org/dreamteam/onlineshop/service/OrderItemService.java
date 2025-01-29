@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface OrderItemService {
 
-    OrderItem addOrderItem(Product product, int quantity);
-    OrderItem updateOrderItem(Long id,Order order, Product product,int quantity);
+    void addOrderItem(Product product, int quantity);
+    void updateOrderItem(Long id, Order order, Product product, int quantity);
     void deleteOrderItem(Long orderItemId);
     OrderItem getOrderItem(Long orderItemId);
     List<OrderItem> getAllOrderItems();

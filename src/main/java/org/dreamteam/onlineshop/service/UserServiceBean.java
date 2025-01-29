@@ -26,7 +26,7 @@ private final UserRepository userRepository;
     }
 
     @Override
-    public User createUser( String userName, String userPassword, String userAddress, String userEmail, UserRole userRole) {
+    public User addUser( String userName, String userPassword, String userAddress, String userEmail, UserRole userRole) {
         User user = new User(userName,userPassword,userAddress,userEmail, userRole);
         userRepository.save(user);
         return user;
@@ -88,7 +88,7 @@ private final UserRepository userRepository;
     }
 
     @Override
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    public List<User> getUsers() {return userRepository.findAll();
     }
+
 }

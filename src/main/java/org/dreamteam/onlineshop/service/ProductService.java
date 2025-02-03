@@ -1,8 +1,7 @@
 package org.dreamteam.onlineshop.service;
 
-import lombok.NonNull;
-import org.dreamteam.onlineshop.model.Category;
 import org.dreamteam.onlineshop.model.Product;
+import org.dreamteam.onlineshop.model.enums.Category;
 
 import java.util.List;
 

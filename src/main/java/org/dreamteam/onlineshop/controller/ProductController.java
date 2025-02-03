@@ -2,8 +2,8 @@ package org.dreamteam.onlineshop.controller;
 
 import ch.qos.logback.core.model.Model;
 import lombok.extern.slf4j.Slf4j;
-import org.dreamteam.onlineshop.model.Category;
 import org.dreamteam.onlineshop.model.Product;
+import org.dreamteam.onlineshop.model.enums.Category;
 import org.dreamteam.onlineshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -101,7 +101,7 @@ public class ProductController {
     // Filter products by category
     @GetMapping("/category")
     public String getProductsByCategory(@RequestParam Category category, Model model) {
-        List<Product> products = productService.getProductsByCategory(String.valueOf(category));
+        List<Product> products = productService.getProductsByCategory(category);
         model.addAttribute("products", products);
         return "product-list";
     }

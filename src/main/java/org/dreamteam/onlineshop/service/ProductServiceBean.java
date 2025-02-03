@@ -1,10 +1,10 @@
 package org.dreamteam.onlineshop.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.dreamteam.onlineshop.model.Category;
 import org.dreamteam.onlineshop.model.Product;
 
 
+import org.dreamteam.onlineshop.model.enums.Category;
 import org.dreamteam.onlineshop.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

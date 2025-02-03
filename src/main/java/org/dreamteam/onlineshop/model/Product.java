@@ -2,6 +2,7 @@ package org.dreamteam.onlineshop.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.dreamteam.onlineshop.model.enums.Category;
 
 import java.util.List;
 

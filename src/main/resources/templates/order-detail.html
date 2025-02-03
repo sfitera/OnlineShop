@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Detail</title>
+</head>
+<body>
+<h1>Order Detail</h1>
+
+<p>Order ID: <span th:text="${order.id}"></span></p>
+<p>Total Price: <span th:text="${order.totalPrice}"></span></p>
+<p>Order Date: <span th:text="${order.orderDate}"></span></p>
+<p>Status: <span th:text="${order.orderStatus}"></span></p>
+
+<h2>Order Items</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Item ID</th>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${order.orderItems}">
+        <td th:text="${item.id}"></td>
+        <td th:text="${item.product.title}"></td>
+        <td th:text="${item.quantity}"></td>
+        <td th:text="${item.price}"></td>
+        <td>
+            <a th:href="@{/orders/{orderId}/items/{itemId}/delete(orderId=${order.id}, itemId=${item.id})}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Add Order Item</h3>
+<form th:action="@{/orders/{orderId}/items/add(orderId=${order.id})}" th:object="${orderItem}" method="post">
+    <label for="product">Product:</label>
+    <select id="product" th:field="*{product}" required>
+        <!-- Tu môžeš pridať produkty z databázy -->
+        <option value="1">Product 1</option>
+        <option value="2">Product 2</option>
+    </select><br><br>
+
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity" th:field="*{quantity}" required/><br><br>
+
+    <label for="price">Price:</label>
+    <input type="number" id="price" th:field="*{price}" required/><br><br>
+
+    <button type="submit">Add Item</button>
+</form>
+
+<a href="/orders">Back to Orders</a>
+</body>
+</html>

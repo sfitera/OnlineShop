@@ -12,6 +12,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
+
+
 @Slf4j
 @Service
 
@@ -27,10 +29,8 @@ public class ProductServiceBean implements  ProductService {
 
 
     @Override
-    public Product addProduct(String name, Double price, int quantity, Boolean availability, String image, Category category, String author, String description) {
-        Product product = new Product(name, price, quantity, availability, image, category, author, description);
+    public void  addProduct(Product product) {
         productRepository.save(product);
-        return product;
     }
 
 
@@ -83,16 +83,18 @@ public class ProductServiceBean implements  ProductService {
     }
 
     @Override
-    public Product getProduct(Long id) {
-        return null;
-    }
-
-    @Override
     public void deleteProduct(Long id) {
         if (!productRepository.existsById(id)) {
             throw new IllegalArgumentException("Product with id" + id + "does not exist");
         }
         productRepository.deleteById(id);
+    }
+
+    @Override
+    public Product getProduct(Long id) {
+        return productRepository
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Product with id" + id + "does not exist"));
     }
 
 
@@ -102,22 +104,26 @@ public class ProductServiceBean implements  ProductService {
     }
 
     @Override
-    public List<Product> getProductsByCategory(String category) {
-        return List.of();
+    public List<Product> getProductsByCategory(Category category) {
+        return productRepository.findAllByCategory(category);
     }
 
     @Override
     public List<Product> getProductsByAuthor(String author) {
-        return List.of();
+        return productRepository.findAllByAuthor(author);
     }
 
-    @Override
-    public List<Product> getProductsByCategoryAndAuthor(String category, String author) {
-        return List.of();
-    }
 
     @Override
     public List<Product> getAllProducts() {
-        return List.of();
+        return productRepository.findAll();
+    }
+
+    @Override
+    public Product getProductByName(String name) {
+        return productRepository.findByName(name);
+
     }
 }
+
+

@@ -9,15 +9,15 @@ import java.util.List;
 public interface ProductService {
 
 
-    Product addProduct(String name, Double price, int quantity, Boolean availability, String image, Category category, String author, String description);
+    void  addProduct(Product product);
     Product updateProduct(Long id, Product updateProduct);
     Product getProduct(Long id);
+    Product getProductByName(String name);
     void deleteProduct(Long id);
 
     List<Product> getProducts();
-    List<Product> getProductsByCategory(String category);
+    List<Product> getProductsByCategory(Category category);
     List<Product> getProductsByAuthor(String author);
-    List<Product> getProductsByCategoryAndAuthor(String category, String author);
     List<Product> getAllProducts();
     
 }

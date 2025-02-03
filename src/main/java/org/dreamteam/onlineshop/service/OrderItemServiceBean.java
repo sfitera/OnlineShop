@@ -23,36 +23,33 @@ public class OrderItemServiceBean implements OrderItemService {
 
 
     @Override
-    public OrderItem addOrderItem(Product product, int quantity) {
-        var orderItem = new OrderItem(product,quantity);
-       orderItemRepository.save(orderItem);
-       return orderItem;
+    public void addOrderItem(Product product, int quantity) {
+        var orderItem = new OrderItem(product, quantity);
+        orderItemRepository.save(orderItem);
     }
 
     @Override
-    public OrderItem updateOrderItem(Long id,Order order, Product product,int quantity) {
+    public void updateOrderItem(Long id, Order order, Product product, int quantity) {
         var orderItem = orderItemRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Order item not found"));
-                var updatedItem = new OrderItem();
-                if(product!=null){
-                    updatedItem.setProduct(product);
-                } else {
-                    updatedItem.setProduct(orderItem.getProduct());
-                }
-                if(quantity!=0){
-                    updatedItem.setQuantity(quantity);
-                } else {
-                    updatedItem.setQuantity(orderItem.getQuantity());
-                }
-                orderItemRepository.save(updatedItem);
-
-        return updatedItem;
+        var updatedItem = new OrderItem();
+        if (product != null) {
+            updatedItem.setProduct(product);
+        } else {
+            updatedItem.setProduct(orderItem.getProduct());
+        }
+        if (quantity != 0) {
+            updatedItem.setQuantity(quantity);
+        } else {
+            updatedItem.setQuantity(orderItem.getQuantity());
+        }
+        orderItemRepository.save(updatedItem);
     }
 
     @Override
     public void deleteOrderItem(Long orderItemId) {
-        if(!orderItemRepository.existsById(orderItemId)){
-           throw new IllegalArgumentException("Order item not found");
+        if (!orderItemRepository.existsById(orderItemId)) {
+            throw new IllegalArgumentException("Order item not found");
         }
         orderItemRepository.deleteById(orderItemId);
     }

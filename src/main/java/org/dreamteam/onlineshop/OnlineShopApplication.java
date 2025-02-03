@@ -61,36 +61,25 @@ public class OnlineShopApplication implements CommandLineRunner {
                 new Product( "Kniha5", 20.00, 8, true, "img", categories.getFirst(), "Ferko", "Olala")
         ));
 
-        List<OrderItem> orderItems = new ArrayList<>(List.of(
-                new OrderItem(products.getFirst(), 5),
-                new OrderItem(products.getFirst(), 5),
-                new OrderItem(products.getLast(), 5)
-        ));
-        List<OrderItem> orderItems2 = new ArrayList<>(List.of(
-                new OrderItem(products.getFirst(), 5),
-                new OrderItem(products.getFirst(), 5),
-                new OrderItem(products.getLast(), 5)
-        ));
-        List<OrderItem> orderItems3 = new ArrayList<>(List.of(
-                new OrderItem(products.getFirst(), 5),
-                new OrderItem(products.getFirst(), 5),
-                new OrderItem(products.getLast(), 5)
-        ));
+        Order order = new Order( users.getFirst(), OrderStatus.ORDERED);
+        Order order2 = new Order( users.getFirst(), OrderStatus.CANCELLED);
+        Order order3 =new Order( users.getFirst(), OrderStatus.DELIVERED);
 
-        List<Order> orders = new ArrayList<>(List.of(
-                new Order( users.getFirst(), OrderStatus.ORDERED, orderItems),
-                new Order( users.getFirst(), OrderStatus.CANCELLED, orderItems2),
-                new Order( users.getFirst(), OrderStatus.DELIVERED, orderItems3)
-        ));
 
         userRepository.saveAll(users);
         categoryRepository.saveAll(categories);
         productRepository.saveAll(products);
-        orderItemRepository.saveAll(orderItems);
-        orderItemRepository.saveAll(orderItems2);
-        orderItemRepository.saveAll(orderItems3);
-        orderRepository.saveAll(orders);
+        orderRepository.save(order);
+        orderRepository.save(order2);
+        orderRepository.save(order3);
 
+        OrderItem orderItem1 = new OrderItem(products.get(0), 3);
+        OrderItem orderItem2 = new OrderItem(products.get(1), 1);
+
+        order.addOrderItem(orderItem1);
+        order.addOrderItem(orderItem2);
+
+        orderRepository.save(order);
 
     }
 

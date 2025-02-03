@@ -5,6 +5,7 @@ import lombok.*;
 import org.dreamteam.onlineshop.model.enums.OrderStatus;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -24,22 +25,30 @@ public class Order {
     private double totalPrice;
     private LocalDate orderDate;
     private OrderStatus orderStatus;
-    @OneToMany
-    private List<OrderItem> orderItems;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<OrderItem> orderItems = new ArrayList<>();
 
-    public Order(User user, OrderStatus orderStatus, List<OrderItem> orderItems) {
+
+    public Order(User user, OrderStatus orderStatus) {
         this.user = user;
-        this.totalPrice = setTotalPrice(orderItems);
         this.orderDate = LocalDate.now();
         this.orderStatus = orderStatus;
-        this.orderItems = orderItems;
     }
 
-    private double setTotalPrice(List<OrderItem> orderItems) {
-       double price =0;
-        for (OrderItem orderItem : orderItems) {
-            price += orderItem.getItemPrice();
-        }
+    private double setTotalPrice(OrderItem orderItem) {
+        double price = 0;
+        int quantity = orderItem.getQuantity();
+        price = quantity * orderItem.getItemPrice();
         return price;
     }
+
+    public void addOrderItem(OrderItem orderItem) {
+        this.totalPrice = setTotalPrice(orderItem);
+        this.orderItems.add(orderItem);
+        orderItem.setOrder(this);
+
+    }
 }
+
+
+

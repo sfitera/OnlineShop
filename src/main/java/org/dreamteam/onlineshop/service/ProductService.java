@@ -1,6 +1,7 @@
 package org.dreamteam.onlineshop.service;
 
 import lombok.NonNull;
+import org.dreamteam.onlineshop.model.Category;
 import org.dreamteam.onlineshop.model.Product;
 
 import java.util.List;
@@ -8,10 +9,10 @@ import java.util.List;
 public interface ProductService {
 
 
-    Product addProduct(String name, Double price, String productImage, String category, String author, Boolean availability, String description);
-    Product updateProduct(String name, Double price, String productImage, String category, String author, Boolean availability, String description);
+    Product addProduct(String name, Double price, int quantity, Boolean availability, String image, Category category, String author, String description);
+    Product updateProduct(Long id, Product updateProduct);
     Product getProduct(Long id);
-    boolean deleteProduct(Long id);
+    void deleteProduct(Long id);
 
     List<Product> getProducts();
     List<Product> getProductsByCategory(String category);

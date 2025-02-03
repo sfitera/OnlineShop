@@ -21,9 +21,8 @@ public class OrderController {
 
     @Autowired
     public OrderController(OrderService orderService) {
-            this.orderService = orderService;
-        }
-        @GetMapping("/create")
+
+    @GetMapping("/create")
         public String showCreateOrderForm(Model model) {
             model.addAttribute("order", new Order());
             return "order-form";

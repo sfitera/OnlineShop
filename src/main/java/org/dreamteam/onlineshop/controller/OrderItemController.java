@@ -70,6 +70,4 @@ public class OrderItemController {
         model.addAttribute("orderItems", orderItems);
         return "order-item-list";
     }
-
-
 }

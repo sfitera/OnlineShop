@@ -8,15 +8,20 @@ import java.util.List;
 public interface ProductService {
 
 
-    void  addProduct(Product product);
-    Product updateProduct(Long id, Product updateProduct);
-    Product getProduct(Long id);
-    Product getProductByName(String name);
+    void addProduct(Product product);
+
+    void updateProduct(Long id, Product product);
+
     void deleteProduct(Long id);
 
-    List<Product> getProducts();
+    Product getProductById(Long id);
+
+    Product getProductByName(String name);
+
     List<Product> getProductsByCategory(Category category);
+
     List<Product> getProductsByAuthor(String author);
+
     List<Product> getAllProducts();
-    
+
 }

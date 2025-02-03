@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Order</title>
+</head>
+<body>
+<h1>Create Order</h1>
+<form th:action="@{/orders/create}" th:object="${order}" method="post">
+    <label for="totalPrice">Total Price:</label>
+    <input type="number" id="totalPrice" th:field="*{totalPrice}" required/><br><br>
+
+    <label for="orderDate">Order Date:</label>
+    <input type="date" id="orderDate" th:field="*{orderDate}" required/><br><br>
+
+    <label for="orderStatus">Order Status:</label>
+    <select id="orderStatus" th:field="*{orderStatus}" required>
+        <option value="PENDING">Created</option>
+        <option value="PENDING">Ordered</option>
+        <option value="COMPLETED">Shipped</option>
+        <option value="CANCELLED">Delivered</option>
+        <option value="CANCELLED">Canceled</option>
+    </select><br><br>
+
+    <button type="submit">Create Order</button>
+</form>
+<a href="/orders">Back to Orders</a>
+</body>
+</html>

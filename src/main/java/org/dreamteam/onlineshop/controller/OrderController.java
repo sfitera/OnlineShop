@@ -32,7 +32,7 @@ public class OrderController {
         @PostMapping("/create")
         public String createOrder(@ModelAttribute Order order) {
             orderService.createOrder(order);
-            return "redirect:/orders";
+            return "redirect:/orders/";
         }
 
         @PatchMapping("/{id}/update")
@@ -48,9 +48,8 @@ public class OrderController {
         }
 
         @GetMapping("/{id}")
-        public String getOrderById(@PathVariable Long id, Model model) {
-            Order order = orderService.getOrderById(id);
-            model.addAttribute("order", order);
+        public String getOrderById(@PathVariable("id") Long id, Model model) {
+            model.addAttribute("order", orderService.getOrderById(id));
             return "order-detail";
         }
 
@@ -62,23 +61,22 @@ public class OrderController {
         }
 
         //todo: dorobit
-        @GetMapping("/{userId}")
-        public String getOrdersByUserId(Long userId, Model model){
-            List<Order> orders = orderService.getOrdersByUserId(userId);
-            model.addAttribute("orders", orders);
-            return "order-list";
+        @GetMapping("/user/{userId}")
+        public String getOrdersByUserId(@PathVariable("userId")Long userId, Model model){
+            model.addAttribute("orders", orderService.getOrdersByUserId(userId));
+            return "user-order-list";
         }
 
         @PostMapping("/{orderId}/items/add")
         public String addOrderItem(@PathVariable Long orderId,
                 @ModelAttribute OrderItem orderItem) {
             orderService.addOrderItem(orderId, orderItem);
-            return "redirect:/orders/" + orderId;
+            return "redirect:/orders/";
         }
 
         @GetMapping("/{orderId}/items/{itemId}/delete")
         public String deleteOrderItem(@PathVariable Long orderId, @PathVariable Long itemId) {
             orderService.deleteOrderItem(orderId, itemId);
-            return "redirect:/orders/" + orderId;
+            return "redirect:/orders/";
         }
     }

@@ -2,6 +2,7 @@ package org.dreamteam.onlineshop.controller;
 
 import ch.qos.logback.core.model.Model;
 import lombok.extern.slf4j.Slf4j;
+import org.dreamteam.onlineshop.model.Category;
 import org.dreamteam.onlineshop.model.Product;
 import org.dreamteam.onlineshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class ProductController {
 
     // Zobrazení detailů konkrétního produktu
     // View details of a specific product
-    @GetMapping("/product-detail{id}")
+    @GetMapping("/{id}")
     public String showProductDetails(@PathVariable Long id, Model model) {
         Product product = productService.getProduct(id);
         model.addAttribute("product", product);
@@ -51,17 +52,18 @@ public class ProductController {
     // Zpracování formuláře pro přidání produktu
     // Processing product add form
     @PostMapping("/add-product")
-    public String addProduct(
-            @RequestParam String name,
-            @RequestParam Double price,
-            @RequestParam String productImage,
-            @RequestParam String category,
-            @RequestParam String author,
-            @RequestParam int quantity,
-            @RequestParam(required = false, defaultValue = "false") Boolean availability,
-            @RequestParam String description) {
-        productService.addProduct(name, price, productImage, category, author, availability, description);
-        return "redirect:/products";
+    public String addProduct(@ModelAttribute Product product){
+        productService.addProduct(
+                product.getName(),
+                product.getPrice(),
+                product.getImage(),
+                product.getCategory(),
+                product.getAuthor(),
+                product.getQuantity(),
+                product.getAvailability(),
+                product.getDescription()
+        );
+       return "redirect:/products";
     }
 
     // Formulář pro úpravu existujícího produktu
@@ -75,17 +77,15 @@ public class ProductController {
 
     // Zpracování formuláře pro úpravu produktu
     // Process product edit form
-    @PostMapping("/edit/{id}")
+    @PatchMapping("/{id}/update")
     public String updateProduct(
-            @PathVariable Long id,
+
             @RequestParam String name,
             @RequestParam Double price,
             @RequestParam String productImage,
             @RequestParam String category,
             @RequestParam String author,
-            @RequestParam(required = false, defaultValue = "false") Boolean availability,
             @RequestParam String description) {
-        productService.updateProduct(name, price, productImage, category, author, availability, description);
         return "redirect:/products";
     }
 
@@ -100,8 +100,8 @@ public class ProductController {
     // Filtrování produktů podle kategorie
     // Filter products by category
     @GetMapping("/category")
-    public String getProductsByCategory(@RequestParam String category, Model model) {
-        List<Product> products = productService.getProductsByCategory(category);
+    public String getProductsByCategory(@RequestParam Category category, Model model) {
+        List<Product> products = productService.getProductsByCategory(String.valueOf(category));
         model.addAttribute("products", products);
         return "product-list";
     }
@@ -118,8 +118,8 @@ public class ProductController {
     // Filtrování produktů podle kategorie a autora
     // Filter products by category and author
     @GetMapping("/filter")
-    public String getProductsByCategoryAndAuthor(@RequestParam String category, @RequestParam String author, Model model) {
-        List<Product> products = productService.getProductsByCategoryAndAuthor(category, author);
+    public String getProductsByCategoryAndAuthor(@RequestParam Category category, @RequestParam String author, Model model) {
+        List<Product> products = productService.getProductsByCategoryAndAuthor(String.valueOf(category), author);
         model.addAttribute("products", products);
         return "product-list";
     }

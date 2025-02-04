@@ -1,14 +1,14 @@
 package org.dreamteam.onlineshop.service;
 
+import org.dreamteam.onlineshop.model.DTOs.OrderDTO;
 import org.dreamteam.onlineshop.model.Order;
-import org.dreamteam.onlineshop.model.OrderItem;
 import org.dreamteam.onlineshop.model.enums.OrderStatus;
 
 import java.util.List;
 
 public interface OrderService {
 
-    void createOrder(Order order);
+    Order createOrder(OrderDTO orderDto);
 
     void updateOrderStatus(Long orderId, OrderStatus orderStatus);
 
@@ -19,9 +19,5 @@ public interface OrderService {
     List<Order> getAllOrders();
 
     List<Order> getOrdersByUserId(Long userId);
-
-    void addOrderItem(Long orderId, OrderItem orderItem);
-
-    void deleteOrderItem(Long orderId, Long itemId);
 
 }

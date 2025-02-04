@@ -30,30 +30,28 @@ public class OrderItemController {
         return "order-item-form";
     }
 
-    @PostMapping("/create")
-    public String addOrderItem(@ModelAttribute OrderItem orderItem) {
-        orderItemService.addOrderItem(orderItem.getProduct(), orderItem.getQuantity());
-        return "redirect:/orders/item";
-    }
+//    @PostMapping("/create")
+//    public String addOrderItem(@ModelAttribute OrderItem orderItem) {
+//        orderItemService.addOrderItem(orderItem.getProduct(), orderItem.getQuantity());
+//        return "redirect:/orders/item";
+//    }
 
-    @GetMapping("{id}/update")
+    @GetMapping("/add/{orderId}")
     public String showUpdateOrderItemForm(@PathVariable Long id, Model model) {
         model.addAttribute("orderItem", orderItemService.getOrderItem(id));
         return "order-item-form";
     }
 
-    @PatchMapping("/{id}/update")
+    @PatchMapping("/update/{orderItemId}")
     public String updateOrderItem(@PathVariable Long id,
-                                  @ModelAttribute Order order,
-                                  @ModelAttribute Product product,
                                   @RequestParam int quantity) {
-        orderItemService.updateOrderItem(id, order, product, quantity);
+        orderItemService.updateOrderItem(id, quantity);
         return "redirect:/orders/item";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public String deleteOrderItem(@PathVariable Long id) {
-        orderItemService.deleteOrderItem(id);
+    @DeleteMapping("/delete/{orderId}/{orderItemId}")
+    public String deleteOrderItem(@PathVariable Long id, @PathVariable Long orderItemId) {
+        orderItemService.deleteOrderItem(id, orderItemId);
         return "redirect:/orders/item";
     }
 

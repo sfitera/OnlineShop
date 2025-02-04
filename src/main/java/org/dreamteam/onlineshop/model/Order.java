@@ -48,6 +48,13 @@ public class Order {
         orderItem.setOrder(this);
 
     }
+
+    public void recalculateTotalPrice() {
+        this.totalPrice = orderItems.stream()
+                .mapToDouble(OrderItem::getItemPrice)
+                .sum();
+    }
+
 }
 
 

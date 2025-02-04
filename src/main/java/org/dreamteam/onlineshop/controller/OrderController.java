@@ -1,8 +1,8 @@
 package org.dreamteam.onlineshop.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.dreamteam.onlineshop.model.DTOs.OrderDTO;
 import org.dreamteam.onlineshop.model.Order;
-import org.dreamteam.onlineshop.model.OrderItem;
 import org.dreamteam.onlineshop.model.enums.OrderStatus;
 import org.dreamteam.onlineshop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +31,8 @@ public class OrderController {
     }
 
     @PostMapping("/create")
-    public String createOrder(@ModelAttribute Order order) {
-        orderService.createOrder(order);
+    public String createOrder(@ModelAttribute OrderDTO orderDto) {
+        orderService.createOrder(orderDto);
         return "redirect:/orders/";
     }
 
@@ -61,24 +61,10 @@ public class OrderController {
         return "order-list";
     }
 
-    //todo: dorobit
     @GetMapping("/user/{userId}")
     public String getOrdersByUserId(@PathVariable("userId") Long userId, Model model) {
         model.addAttribute("orders", orderService.getOrdersByUserId(userId));
         return "user-order-list";
-    }
-
-    @PostMapping("/{orderId}/items/add")
-    public String addOrderItem(@PathVariable Long orderId,
-                               @ModelAttribute OrderItem orderItem) {
-        orderService.addOrderItem(orderId, orderItem);
-        return "redirect:/orders/";
-    }
-
-    @GetMapping("/{orderId}/items/{itemId}/delete")
-    public String deleteOrderItem(@PathVariable Long orderId, @PathVariable Long itemId) {
-        orderService.deleteOrderItem(orderId, itemId);
-        return "redirect:/orders/";
     }
 
 }

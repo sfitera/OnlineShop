@@ -31,7 +31,7 @@ public class OrderItem {
     }
 
     private double setItemPrice(int quantity, Product product) {
-        return quantity*product.getProductPrice();
+        return quantity * product.getProductPrice();
     }
 }
 

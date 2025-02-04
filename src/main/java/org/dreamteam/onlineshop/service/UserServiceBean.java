@@ -2,13 +2,9 @@ package org.dreamteam.onlineshop.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.dreamteam.onlineshop.model.User;
-
-import org.dreamteam.onlineshop.model.enums.UserRole;
 import org.dreamteam.onlineshop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -16,9 +12,9 @@ import java.util.List;
 @Slf4j
 @Service
 
-public class UserServiceBean  implements UserService {
+public class UserServiceBean implements UserService {
 
-private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public UserServiceBean(UserRepository userRepository) {
@@ -26,50 +22,33 @@ private final UserRepository userRepository;
     }
 
     @Override
-    public User addUser( String userName, String userPassword, String userAddress, String userEmail, UserRole userRole) {
-        User user = new User(userName,userPassword,userAddress,userEmail, userRole);
+    public void addUser(User user) {
         userRepository.save(user);
-        return user;
     }
 
     @Override
-    public User updateUser (Long id, User updateUser ) {
-        var user = userRepository
+    public void updateUser(Long id, User updateUser) {
+        var existingUser = userRepository
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User with id " + id + " does not exist"));
-        var updated = new User();
-        if (StringUtils.hasText(updateUser.getUserName())) {
-            updated.setUserName(updateUser.getUserName());
-        } else {
-            updated.setUserName(user.getUserName());
+
+        if (updateUser.getUserName() != null && !updateUser.getUserName().isBlank()) {
+            existingUser.setUserName(updateUser.getUserName());
         }
-        if (StringUtils.hasText(updateUser.getUserPassword())) {
-            updated.setUserPassword(updateUser.getUserPassword());
+        if (updateUser.getUserPassword() != null && !updateUser.getUserPassword().isBlank()) {
+            existingUser.setUserPassword(updateUser.getUserPassword());
         }
-        else {
-            updated.setUserPassword(user.getUserPassword());
+        if (updateUser.getUserAddress() != null && !updateUser.getUserAddress().isBlank()) {
+            existingUser.setUserAddress(updateUser.getUserAddress());
         }
-        if (StringUtils.hasText(updateUser.getUserAddress())) {
-            updated.setUserAddress(updateUser.getUserAddress());
+        if (updateUser.getUserEmail() != null && !updateUser.getUserEmail().isBlank()) {
+            existingUser.setUserEmail(updateUser.getUserEmail());
         }
-        else {
-            updated.setUserAddress(user.getUserAddress());
+        if (updateUser.getUserRole() != null) {
+            existingUser.setUserRole(updateUser.getUserRole());
         }
-        if (StringUtils.hasText(updateUser.getUserEmail())) {
-            updated.setUserEmail(updateUser.getUserEmail());
-        }
-        else {
-            updated.setUserEmail(user.getUserEmail());
-        }
-        if (StringUtils.hasText(String.valueOf(updateUser.getUserRole()))) {
-            updated.setUserRole(updateUser.getUserRole());
-        }
-        else {
-            updated.setUserRole(user.getUserRole());
-        }
-       userRepository.save(updated);
-        log.info("User updated: {}", updated);
-        return updated;
+
+        userRepository.save(existingUser);
     }
 
     @Override
@@ -82,13 +61,14 @@ private final UserRepository userRepository;
 
     @Override
     public User getUser(Long id) {
-     return userRepository
-             .findById(id)
-             .orElseThrow(() -> new IllegalArgumentException("User with id" + id + "does not exist"));
+        return userRepository
+                .findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User with id" + id + "does not exist"));
     }
 
     @Override
-    public List<User> getUsers() {return userRepository.findAll();
+    public List<User> getUsers() {
+        return userRepository.findAll();
     }
 
 }

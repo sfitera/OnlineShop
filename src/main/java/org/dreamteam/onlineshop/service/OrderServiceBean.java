@@ -5,10 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.dreamteam.onlineshop.model.Order;
 import org.dreamteam.onlineshop.model.OrderItem;
 import org.dreamteam.onlineshop.model.enums.OrderStatus;
-import org.dreamteam.onlineshop.repository.OrderItemRepository;
 import org.dreamteam.onlineshop.repository.OrderRepository;
-import org.dreamteam.onlineshop.repository.ProductRepository;
-import org.dreamteam.onlineshop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -31,7 +31,7 @@ public class ProductServiceBean implements ProductService {
 
     @Override
     public void updateProduct(Long id, Product updateData) {
-        Product product = productRepository.findById(id)
+        var product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Product with id " + id + " does not exist"));
 
         Optional.ofNullable(updateData.getProductName()).ifPresent(product::setProductName);
@@ -62,19 +62,30 @@ public class ProductServiceBean implements ProductService {
     }
 
     @Override
-    public Product getProductByName(String name) {
-        return productRepository.findByProductName(name);
+    public List<Product> getProductsByName(String name) {
+        List<Product> products = productRepository.findAllByProductNameContainingIgnoreCase(name);
+        if (products.isEmpty()) {
+            throw new IllegalArgumentException("No products found with name containing: " + name);
+        }
+        return products;
     }
-
 
     @Override
     public List<Product> getProductsByCategory(Category category) {
-        return productRepository.findAllByProductCategory(category);
+        List<Product> products = productRepository.getProductsByProductCategory(category);
+        if (products.isEmpty()) {
+            throw new IllegalArgumentException("No products found for category: " + category);
+        }
+        return products;
     }
 
     @Override
     public List<Product> getProductsByAuthor(String author) {
-        return productRepository.findAllByProductAuthor(author);
+        List<Product> products = productRepository.findAllByProductAuthorContainingIgnoreCase(author);
+        if (products.isEmpty()) {
+            throw new IllegalArgumentException("No products found for author containing: " + author);
+        }
+        return products;
     }
 
 

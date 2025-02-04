@@ -85,8 +85,8 @@ public class ProductController {
 
     @GetMapping("/name")
     public String getProductByName(@RequestParam String name, Model model) {
-        Product product = productService.getProductByName(name);
-        model.addAttribute("products", product);
+        List<Product> products = productService.getProductsByName(name);
+        model.addAttribute("products", products);
         return "product-list-name";
     }
 }

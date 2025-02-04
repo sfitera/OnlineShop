@@ -114,3 +114,4 @@ data downloaded from users should be pre-validated
 
 
 Commit message template : #20: commit message
+swagger ulr: http://localhost:8080/swagger-ui/index.html

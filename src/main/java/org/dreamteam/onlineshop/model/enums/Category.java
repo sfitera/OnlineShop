@@ -1,23 +1,21 @@
 package org.dreamteam.onlineshop.model.enums;
 
 public enum Category {
-    MYSTERY("Mystery"),
-    FANTASY("Fantasy"),
-    SCIENCE_FICTION("Science Fiction"),
-    BIOGRAPHY("Biography"),
-    HISTORY("History"),
-    CHILDREN("Children"),
-    ROMANCE("Romance"),
-    HORROR("Horror"),
-    POETRY("Poetry"),
-    GRAPHIC_NOVEL("Graphic Novel"),
-    RELIGION("Religion"),
-    BUSINESS("Business"),
-    SCIENCE("Science"),
-    COOKING("Cooking"),
     ART("Art"),
-    TRAVEL("Travel"),
-    EDUCATION("Education");
+    BIOGRAPHY("Biography"),
+    CHILDREN("Children"),
+    COOKING("Cooking"),
+    DETECTIVE("Detective"),
+    EDUCATION("Education"),
+    FANTASY("Fantasy"),
+    HISTORY("History"),
+    HORROR("Horror"),
+    MYSTERY("Mystery"),
+    POETRY("Poetry"),
+    ROMANCE("Romance"),
+    SCIENCE("Science"),
+    SCIENCE_FICTION("Science Fiction"),
+    TRAVEL("Travel");
 
     private final String displayName;
 

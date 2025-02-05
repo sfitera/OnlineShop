@@ -5,8 +5,8 @@ import org.dreamteam.onlineshop.model.enums.UserRole;
 
 @Data
 public class UserDTO {
-    private Long id;
     private String userName;
+    private String userPassword;
     private String userAddress;
     private String userEmail;
     private UserRole userRole;

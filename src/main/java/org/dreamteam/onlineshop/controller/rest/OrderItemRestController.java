@@ -47,15 +47,13 @@ public class OrderItemRestController {
     @Operation(summary = "Získaj polozku podla ID")
     public ResponseEntity<OrderItem> getOrderItem(@PathVariable Long orderItemId) {
         OrderItem orderItem = orderItemService.getOrderItem(orderItemId);
-        return orderItem != null ? new ResponseEntity<>(orderItem, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return orderItem != null ? new ResponseEntity<>(orderItem, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/")
     @Operation(summary = "Získaj zoznam všetkých poloziek")
     public ResponseEntity<List<OrderItem>> getAllOrderItems() {
         List<OrderItem> orderItems = orderItemService.getAllOrderItems();
-        return orderItems != null ? new ResponseEntity<>(orderItems, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return orderItems != null ? new ResponseEntity<>(orderItems, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

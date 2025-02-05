@@ -55,16 +55,16 @@ public class OrderRestController {
     @GetMapping("/")
     @Operation(summary = "Získaj zoznam všetkých objednavok")
     public ResponseEntity<List<Order>> getAllOrders() {
-        List<Order> orders = orderService.getAllOrders();
-        return orders != null ? new ResponseEntity<>(orders, HttpStatus.OK)
+        List<Order> order = orderService.getAllOrders();
+        return order != null ? new ResponseEntity<>(order, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/user/{userId}")
     @Operation(summary = "Získaj zoznam všetkých produktov patriace uzivatelovi")
     public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable Long userId) {
-        List<Order> orders = orderService.getOrdersByUserId(userId);
-        return orders != null ? new ResponseEntity<>(orders, HttpStatus.OK)
+        List<Order> order = orderService.getOrdersByUserId(userId);
+        return order != null ? new ResponseEntity<>(order, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

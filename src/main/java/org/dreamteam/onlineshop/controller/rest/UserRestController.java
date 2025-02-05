@@ -2,6 +2,7 @@ package org.dreamteam.onlineshop.controller.rest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.dreamteam.onlineshop.model.DTOs.UserDTO;
 import org.dreamteam.onlineshop.model.User;
 import org.dreamteam.onlineshop.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -23,14 +24,14 @@ private final UserService userService;
 
     @PostMapping("/add")
     @Operation(summary = "Pridaj uzivatela")
-    public ResponseEntity<String> addUser(@RequestBody User user){
-        userService.addUser(user);
+    public ResponseEntity<String> addUser(@RequestBody UserDTO userDTO){
+        userService.addUser(userDTO);
         return new ResponseEntity<>("User added successfully", HttpStatus.CREATED);
     }
     @PatchMapping("/update/{id}")
     @Operation(summary = "Aktualizuj uzivatela")
-    public ResponseEntity<String> updateUser(@PathVariable Long id, User updateUser){
-        userService.updateUser(id, updateUser);
+    public ResponseEntity<String> updateUser(@PathVariable Long id, UserDTO userDTO){
+        userService.updateUser(id, userDTO);
         return new ResponseEntity<>("User updated successfully", HttpStatus.OK);
     }
     @DeleteMapping("/delete/{id}")

@@ -10,15 +10,7 @@ import java.util.List;
 public class OrderDTO {
 
     private Long userId;
-    private List<OrderItemDto> orderItems;
+    private List<OrderItemDTO> orderItems;
     private OrderStatus orderStatus;
     private LocalDate orderDate;
-
-
-    @Data
-    public static class OrderItemDto {
-        private Long productId;
-        private int quantity;
-    }
-
 }

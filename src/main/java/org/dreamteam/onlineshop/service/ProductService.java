@@ -1,5 +1,6 @@
 package org.dreamteam.onlineshop.service;
 
+import org.dreamteam.onlineshop.model.DTOs.ProductDTO;
 import org.dreamteam.onlineshop.model.Product;
 import org.dreamteam.onlineshop.model.enums.Category;
 
@@ -8,9 +9,9 @@ import java.util.List;
 public interface ProductService {
 
 
-    void addProduct(Product product);
+    void addProduct(ProductDTO productDTO);
 
-    void updateProduct(Long id, Product product);
+    void updateProduct(Long id, ProductDTO productDTO);
 
     void deleteProduct(Long id);
 

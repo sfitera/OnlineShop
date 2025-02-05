@@ -1,6 +1,7 @@
 package org.dreamteam.onlineshop.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.dreamteam.onlineshop.mapper.EntityMapper;
 import org.dreamteam.onlineshop.model.DTOs.OrderItemDTO;
 import org.dreamteam.onlineshop.model.Order;
 import org.dreamteam.onlineshop.model.OrderItem;
@@ -21,12 +22,14 @@ public class OrderItemServiceBean implements OrderItemService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final ProductRepository productRepository;
+    private final EntityMapper entityMapper;
 
     @Autowired
-    public OrderItemServiceBean(OrderRepository orderRepository, OrderItemRepository orderItemRepository, ProductRepository productRepository) {
+    public OrderItemServiceBean(OrderRepository orderRepository, OrderItemRepository orderItemRepository, ProductRepository productRepository, EntityMapper entityMapper) {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.productRepository = productRepository;
+        this.entityMapper = entityMapper;
     }
 
     public void addOrderItem(Long orderId, OrderItemDTO orderItemDTO) {
@@ -45,7 +48,9 @@ public class OrderItemServiceBean implements OrderItemService {
             item.setItemPrice(item.getQuantity() * product.getProductPrice());
             orderItemRepository.save(item);
         } else {
-            OrderItem newOrderItem = new OrderItem(product, orderItemDTO.getQuantity());
+            OrderItem newOrderItem = entityMapper.toOrderItemEntity(orderItemDTO);
+            newOrderItem.setProduct(product);
+            newOrderItem.setItemPrice(newOrderItem.getQuantity() * product.getProductPrice());
             order.addOrderItem(newOrderItem);
             orderItemRepository.save(newOrderItem);
         }
@@ -64,7 +69,6 @@ public class OrderItemServiceBean implements OrderItemService {
             orderItem.setItemPrice(quantity * orderItem.getProduct().getProductPrice());
             orderItemRepository.save(orderItem);
 
-            // Update the order total price
             Order order = orderItem.getOrder();
             order.recalculateTotalPrice();
             orderRepository.save(order);

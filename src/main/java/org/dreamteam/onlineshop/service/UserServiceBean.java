@@ -1,6 +1,8 @@
 package org.dreamteam.onlineshop.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.dreamteam.onlineshop.mapper.EntityMapper;
+import org.dreamteam.onlineshop.model.DTOs.UserDTO;
 import org.dreamteam.onlineshop.model.User;
 import org.dreamteam.onlineshop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,22 +17,27 @@ import java.util.List;
 public class UserServiceBean implements UserService {
 
     private final UserRepository userRepository;
+    private final EntityMapper entityMapper;
 
     @Autowired
-    public UserServiceBean(UserRepository userRepository) {
+    public UserServiceBean(UserRepository userRepository, EntityMapper entityMapper) {
         this.userRepository = userRepository;
+        this.entityMapper = entityMapper;
     }
 
     @Override
-    public void addUser(User user) {
+    public void addUser(UserDTO userDTO) {
+        User user = entityMapper.toUserEntity(userDTO);
         userRepository.save(user);
     }
 
     @Override
-    public void updateUser(Long id, User updateUser) {
+    public void updateUser(Long id, UserDTO userDTO) {
         var existingUser = userRepository
                 .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User with id " + id + " does not exist"));
+
+        User updateUser = entityMapper.toUserEntity(userDTO);
 
         if (updateUser.getUserName() != null && !updateUser.getUserName().isBlank()) {
             existingUser.setUserName(updateUser.getUserName());
@@ -63,7 +70,7 @@ public class UserServiceBean implements UserService {
     public User getUser(Long id) {
         return userRepository
                 .findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User with id" + id + "does not exist"));
+                .orElseThrow(() -> new IllegalArgumentException("User with id " + id + " does not exist"));
     }
 
     @Override

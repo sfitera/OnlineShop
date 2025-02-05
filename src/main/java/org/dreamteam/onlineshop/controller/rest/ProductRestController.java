@@ -1,5 +1,6 @@
 package org.dreamteam.onlineshop.controller.rest;
 
+import org.dreamteam.onlineshop.model.DTOs.ProductDTO;
 import org.dreamteam.onlineshop.model.Product;
 import org.dreamteam.onlineshop.model.enums.Category;
 import org.dreamteam.onlineshop.service.ProductService;
@@ -26,15 +27,15 @@ public class ProductRestController {
 
     @PostMapping("/add")
     @Operation(summary = "Pridaj nový produkt")
-    public ResponseEntity<String> addProduct(@RequestBody Product product) {
-        productService.addProduct(product);
+    public ResponseEntity<String> addProduct(@RequestBody ProductDTO productDTO) {
+        productService.addProduct(productDTO);
         return new ResponseEntity<>("Product added successfully", HttpStatus.CREATED);
     }
 
     @PatchMapping("/update/{id}")
     @Operation(summary = "Aktualizuj produkt podla ID")
-    public ResponseEntity<String> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
-        productService.updateProduct(id, updatedProduct);
+    public ResponseEntity<String> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+        productService.updateProduct(id, productDTO);
         return new ResponseEntity<>("Product updated successfully", HttpStatus.OK);
     }
 
@@ -49,7 +50,7 @@ public class ProductRestController {
     @Operation(summary = "Získaj zoznam všetkých produktov podla ID produktu")
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         Product product = productService.getProductById(id);
-        return product != null ? new ResponseEntity<>(product, HttpStatus.OK)
+        return product != null ? new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     }
@@ -81,6 +82,8 @@ public class ProductRestController {
     @GetMapping("/")
     @Operation(summary = "Získaj zoznam všetkých produktov")
     public ResponseEntity<List<Product>> getAllProducts() {
-        return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
+        List<Product> products = productService.getAllProducts();
+        return products != null ? new ResponseEntity<>(products, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

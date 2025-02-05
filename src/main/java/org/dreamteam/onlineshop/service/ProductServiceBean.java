@@ -1,6 +1,8 @@
 package org.dreamteam.onlineshop.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.dreamteam.onlineshop.mapper.EntityMapper;
+import org.dreamteam.onlineshop.model.DTOs.ProductDTO;
 import org.dreamteam.onlineshop.model.Product;
 import org.dreamteam.onlineshop.model.enums.Category;
 import org.dreamteam.onlineshop.repository.ProductRepository;
@@ -16,23 +18,28 @@ import java.util.Optional;
 public class ProductServiceBean implements ProductService {
 
     private final ProductRepository productRepository;
+    private final EntityMapper entityMapper;
 
     @Autowired
-    public ProductServiceBean(ProductRepository productRepository) {
+    public ProductServiceBean(ProductRepository productRepository, EntityMapper entityMapper) {
         this.productRepository = productRepository;
+        this.entityMapper = entityMapper;
     }
 
 
     @Override
-    public void addProduct(Product product) {
+    public void addProduct(ProductDTO productDTO) {
+        Product product = entityMapper.toProductEntity(productDTO);
         product.setProductAvailability(product.getProductQuantity() > 0);
         productRepository.save(product);
     }
 
     @Override
-    public void updateProduct(Long id, Product updateData) {
+    public void updateProduct(Long id, ProductDTO productDTO) {
         var product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Product with id " + id + " does not exist"));
+
+        Product updateData = entityMapper.toProductEntity(productDTO);
 
         Optional.ofNullable(updateData.getProductName()).ifPresent(product::setProductName);
         Optional.ofNullable(updateData.getProductPrice()).ifPresent(product::setProductPrice);
@@ -93,8 +100,6 @@ public class ProductServiceBean implements ProductService {
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
-
-
 }
 
 

@@ -36,7 +36,6 @@ public class Product {
         this.productCategory = productCategory;
         this.productAuthor = productAuthor;
         this.productDescription = productDescription;
-
         this.productAvailability = productQuantity > 0;
     }
 

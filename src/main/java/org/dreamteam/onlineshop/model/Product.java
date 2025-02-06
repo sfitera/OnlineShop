@@ -23,6 +23,7 @@ public class Product {
     @Column(nullable = false)
     private boolean productAvailability = false;
     private String productImage;
+    @Enumerated(EnumType.STRING)
     private Category productCategory;
     private String productAuthor;
     @Column(nullable = false, length = 1000)

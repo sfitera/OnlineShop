@@ -1,9 +1,8 @@
-package org.dreamteam.onlineshop.bean;
+package org.dreamteam.onlineshop.service;
 
 import org.dreamteam.onlineshop.model.Product;
 import org.dreamteam.onlineshop.model.enums.Category;
 import org.dreamteam.onlineshop.repository.ProductRepository;
-import org.dreamteam.onlineshop.service.ProductServiceBean;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

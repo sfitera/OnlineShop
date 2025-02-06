@@ -1,10 +1,9 @@
-package org.dreamteam.onlineshop.bean;
+package org.dreamteam.onlineshop.service;
 
 import org.dreamteam.onlineshop.model.Order;
 import org.dreamteam.onlineshop.model.OrderItem;
 import org.dreamteam.onlineshop.model.enums.OrderStatus;
 import org.dreamteam.onlineshop.repository.OrderRepository;
-import org.dreamteam.onlineshop.service.OrderServiceBean;
 import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

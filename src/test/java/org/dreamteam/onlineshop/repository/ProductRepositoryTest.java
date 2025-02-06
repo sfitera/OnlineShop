@@ -6,10 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
-
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
@@ -20,7 +17,7 @@ class ProductRepositoryTest {
 
     @BeforeEach
         public void setUp() {
-            // Setting up test data
+
             Product product1 = new Product();
             product1.setProductName("Book of Spring");
             product1.setProductAuthor("John Doe");
@@ -36,7 +33,7 @@ class ProductRepositoryTest {
             product3.setProductAuthor("John Doe");
             product3.setProductCategory(Category.TRAVEL);
 
-            // Save products to repository
+
             productRepository.save(product1);
             productRepository.save(product2);
             productRepository.save(product3);

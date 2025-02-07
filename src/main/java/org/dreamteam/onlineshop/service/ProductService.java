@@ -9,7 +9,7 @@ import java.util.List;
 public interface ProductService {
 
 
-    void addProduct(ProductDTO productDTO);
+    Product addProduct(ProductDTO productDTO);
 
     void updateProduct(Long id, ProductDTO productDTO);
 

@@ -21,6 +21,7 @@ public class Product {
     private Double productPrice;
     private int productQuantity;
     @Column(nullable = false)
+    @Builder.Default
     private boolean productAvailability = false;
     private String productImage;
     private Category productCategory;

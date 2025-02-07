@@ -27,9 +27,9 @@ public class ProductRestController {
 
     @PostMapping("/add")
     @Operation(summary = "Pridaj nový produkt")
-    public ResponseEntity<Product> addProduct(@RequestBody ProductDTO productDTO) {
-        Product product = productService.addProduct(productDTO);
-        return new ResponseEntity<>(product, HttpStatus.CREATED);
+    public ResponseEntity<String> addProduct(@RequestBody ProductDTO productDTO) {
+        productService.addProduct(productDTO);
+        return new ResponseEntity<>("Product added successfully", HttpStatus.CREATED);
     }
 
     @PatchMapping("/update/{id}")

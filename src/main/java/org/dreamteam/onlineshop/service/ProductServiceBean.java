@@ -28,13 +28,10 @@ public class ProductServiceBean implements ProductService {
 
 
     @Override
-    public Product addProduct(ProductDTO productDTO) {
+    public void addProduct(ProductDTO productDTO) {
         Product product = entityMapper.toProductEntity(productDTO);
-        if (product == null) {
-            throw new IllegalArgumentException("Product entity cannot be null");
-        }
         product.setProductAvailability(product.getProductQuantity() > 0);
-        return productRepository.save(product);
+        productRepository.save(product);
     }
 
     @Override

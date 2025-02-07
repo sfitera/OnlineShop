@@ -1,19 +1,15 @@
 package org.dreamteam.onlineshop.bean;
 
-import jakarta.transaction.Transactional;
-import org.dreamteam.onlineshop.mapper.EntityMapper;
-import org.dreamteam.onlineshop.model.DTOs.ProductDTO;
 import org.dreamteam.onlineshop.model.Product;
 import org.dreamteam.onlineshop.model.enums.Category;
 import org.dreamteam.onlineshop.repository.ProductRepository;
 import org.dreamteam.onlineshop.service.ProductServiceBean;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.test.context.TestPropertySource;
-
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,40 +18,24 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-
-@TestPropertySource(locations = "classpath:application-test.properties")
+@ExtendWith(MockitoExtension.class)
 class ProductServiceBeanTest {
 
     @Mock
     private ProductRepository productRepository;
 
-    @Mock
-    private EntityMapper entityMapper;
-
     @InjectMocks
     private ProductServiceBean productService;
 
-    private ProductDTO testProductDTO;
     private Product testProduct;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-
-        testProductDTO = new ProductDTO();
-        testProductDTO.setProductName("Test Product");
-        testProductDTO.setProductPrice(19.99);
-        testProductDTO.setProductQuantity(10);
-        testProductDTO.setProductImage("image.jpg");
-        testProductDTO.setProductCategory(Category.COOKING);
-        testProductDTO.setProductAuthor("Test Author");
-        testProductDTO.setProductDescription("Test Description");
-
         testProduct = new Product();
         testProduct.setId(1L);
         testProduct.setProductName("Test Product");
         testProduct.setProductPrice(19.99);
-        testProduct.setProductQuantity(100);
+        testProduct.setProductQuantity(10);
         testProduct.setProductAvailability(true);
         testProduct.setProductImage("image.jpg");
         testProduct.setProductCategory(Category.COOKING);
@@ -63,20 +43,17 @@ class ProductServiceBeanTest {
         testProduct.setProductDescription("Test Description");
     }
 
-    //TODO: opytat sa Lucky, toto z nejakeho dovodu nefunguje
     @Test
     void testAddProduct() {
-        when(productRepository.save(any(Product.class))).thenReturn(testProduct);
-        Product result = productService.addProduct(testProductDTO);
-        assertNotNull(result, "Product should be created successfully");
-        verify(productRepository, times(1)).save(any(Product.class));
-        assertTrue(result.getProductAvailability(), "Product availability should be true");
-        assertEquals(100, result.getProductQuantity(), "Product quantity should be 100");
+        productService.addProduct(testProduct);
+
+        verify(productRepository, times(1)).save(testProduct);
+        assertTrue(testProduct.getProductAvailability());
     }
-    //TODO: opytat sa Lucky, toto z nejakeho dovodu nefunguje
+
     @Test
     void testUpdateProduct_Success() {
-        ProductDTO updatedProduct = new ProductDTO();
+        Product updatedProduct = new Product();
         updatedProduct.setProductName("Updated Product");
         updatedProduct.setProductPrice(25.99);
         updatedProduct.setProductQuantity(5);
@@ -96,7 +73,7 @@ class ProductServiceBeanTest {
         when(productRepository.findById(1L)).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                productService.updateProduct(1L, testProductDTO));
+                productService.updateProduct(1L, testProduct));
 
         assertEquals("Product with id 1 does not exist", exception.getMessage());
         verify(productRepository, never()).save(any(Product.class));

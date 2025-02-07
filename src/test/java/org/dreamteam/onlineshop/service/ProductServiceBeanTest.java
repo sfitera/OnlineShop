@@ -5,6 +5,7 @@ import org.dreamteam.onlineshop.model.DTOs.ProductDTO;
 import org.dreamteam.onlineshop.model.Product;
 import org.dreamteam.onlineshop.model.enums.Category;
 import org.dreamteam.onlineshop.repository.ProductRepository;
+import org.dreamteam.onlineshop.service.ProductServiceBean;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

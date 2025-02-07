@@ -1,4 +1,4 @@
-package org.dreamteam.onlineshop.bean;
+package org.dreamteam.onlineshop.service;
 
 import org.dreamteam.onlineshop.mapper.EntityMapper;
 import org.dreamteam.onlineshop.model.DTOs.OrderDTO;

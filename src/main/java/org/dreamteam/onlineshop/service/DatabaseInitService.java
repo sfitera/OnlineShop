@@ -3,6 +3,7 @@ package org.dreamteam.onlineshop.service;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.io.Reader;
 import java.util.Objects;
 
 @Service
+@Profile("!test")
 public class DatabaseInitService {
 
     @Autowired

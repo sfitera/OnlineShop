@@ -20,9 +20,6 @@ public class OrderItem {
     private Long id;
     @ManyToOne
     private Product product;
-    @ManyToOne
-    @JsonIgnore
-    private Order order;
     private int quantity;
     private double itemPrice;
 

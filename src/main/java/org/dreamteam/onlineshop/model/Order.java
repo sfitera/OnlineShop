@@ -25,7 +25,7 @@ public class Order {
     private double totalPrice;
     private LocalDate orderDate;
     private OrderStatus orderStatus;
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems = new ArrayList<>();
 
 
@@ -45,7 +45,6 @@ public class Order {
     public void addOrderItem(OrderItem orderItem) {
         this.totalPrice = setTotalPrice(orderItem);
         this.orderItems.add(orderItem);
-        orderItem.setOrder(this);
 
     }
 

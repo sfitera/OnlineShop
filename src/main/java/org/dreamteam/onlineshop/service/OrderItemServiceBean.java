@@ -32,60 +32,42 @@ public class OrderItemServiceBean implements OrderItemService {
         this.entityMapper = entityMapper;
     }
 
-    public void addOrderItem(Long orderId, OrderItemDTO orderItemDTO) {
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+    public void addOrderItem(OrderItemDTO orderItemDTO) {
         Product product = productRepository.findById(orderItemDTO.getProductId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        Optional<OrderItem> existingOrderItem = order.getOrderItems().stream()
-                .filter(item -> item.getProduct().getId().equals(product.getId()))
-                .findFirst();
+        OrderItem newOrderItem = entityMapper.toOrderItemEntity(orderItemDTO);
+        newOrderItem.setProduct(product);
+        newOrderItem.setItemPrice(newOrderItem.getQuantity() * product.getProductPrice());
 
-        if (existingOrderItem.isPresent()) {
-            OrderItem item = existingOrderItem.get();
-            item.setQuantity(item.getQuantity() + orderItemDTO.getQuantity());
-            item.setItemPrice(item.getQuantity() * product.getProductPrice());
-            orderItemRepository.save(item);
-        } else {
-            OrderItem newOrderItem = entityMapper.toOrderItemEntity(orderItemDTO);
-            newOrderItem.setProduct(product);
-            newOrderItem.setItemPrice(newOrderItem.getQuantity() * product.getProductPrice());
-            order.addOrderItem(newOrderItem);
-            orderItemRepository.save(newOrderItem);
-        }
-
-        order.recalculateTotalPrice();
-        orderRepository.save(order);
+        orderItemRepository.save(newOrderItem);
     }
 
     @Override
     public void updateOrderItem(Long orderItemId, int quantity) {
+        if (quantity < 0) {
+            throw new IllegalArgumentException("Quantity cannot be negative");
+        }
+
         OrderItem orderItem = orderItemRepository.findById(orderItemId)
                 .orElseThrow(() -> new RuntimeException("OrderItem not found"));
 
-        if (quantity > 0) {
+        if (quantity == 0) {
+            orderItemRepository.delete(orderItem);
+        } else {
             orderItem.setQuantity(quantity);
             orderItem.setItemPrice(quantity * orderItem.getProduct().getProductPrice());
             orderItemRepository.save(orderItem);
-
-            Order order = orderItem.getOrder();
-            order.recalculateTotalPrice();
-            orderRepository.save(order);
         }
     }
 
     @Override
-    public void deleteOrderItem(Long orderId, Long orderItemId) {
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+    public void deleteOrderItem(Long orderItemId) {
         OrderItem orderItem = orderItemRepository.findById(orderItemId)
                 .orElseThrow(() -> new RuntimeException("OrderItem not found"));
 
-        order.getOrderItems().remove(orderItem);
         orderItemRepository.delete(orderItem);
-        order.recalculateTotalPrice();
-        orderRepository.save(order);
+
     }
 
     @Override

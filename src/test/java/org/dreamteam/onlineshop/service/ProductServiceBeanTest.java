@@ -58,12 +58,15 @@ class ProductServiceBeanTest {
         testProduct.setProductCategory(Category.COOKING);
         testProduct.setProductAuthor("Test Author");
         testProduct.setProductDescription("Test Description");
+
+        when(productRepository.save(any(Product.class))).thenReturn(testProduct);
+        when(entityMapper.toProductEntity(any(ProductDTO.class))).thenReturn(testProduct);
+
     }
 
     //TODO: opytat sa Lucky, toto z nejakeho dovodu nefunguje
     @Test
     void testAddProduct() {
-        when(productRepository.save(any(Product.class))).thenReturn(testProduct);
         Product result = productService.addProduct(testProductDTO);
         assertNotNull(result, "Product should be created successfully");
         verify(productRepository, times(1)).save(any(Product.class));
@@ -73,19 +76,26 @@ class ProductServiceBeanTest {
     //TODO: opytat sa Lucky, toto z nejakeho dovodu nefunguje
     @Test
     void testUpdateProduct_Success() {
-        ProductDTO updatedProduct = new ProductDTO();
+        ProductDTO updatedProductDTO = new ProductDTO();
+        updatedProductDTO.setProductName("Updated Product");
+        updatedProductDTO.setProductPrice(25.99);
+        updatedProductDTO.setProductQuantity(5);
+
+        Product updatedProduct = new Product();
         updatedProduct.setProductName("Updated Product");
         updatedProduct.setProductPrice(25.99);
         updatedProduct.setProductQuantity(5);
 
-        when(productRepository.findById(1L)).thenReturn(Optional.of(testProduct));
 
-        productService.updateProduct(1L, updatedProduct);
+        when(productRepository.findById(1L)).thenReturn(Optional.of(updatedProduct));
+        when(entityMapper.toProductEntity(updatedProductDTO)).thenReturn(updatedProduct);
 
-        verify(productRepository, times(1)).save(testProduct);
-        assertEquals("Updated Product", testProduct.getProductName());
-        assertEquals(25.99, testProduct.getProductPrice());
-        assertEquals(5, testProduct.getProductQuantity());
+        productService.updateProduct(1L, updatedProductDTO);
+
+        verify(productRepository, times(1)).save(updatedProduct);
+        assertEquals("Updated Product", updatedProduct.getProductName());
+        assertEquals(25.99, updatedProduct.getProductPrice());
+        assertEquals(5, updatedProduct.getProductQuantity());
     }
 
     @Test

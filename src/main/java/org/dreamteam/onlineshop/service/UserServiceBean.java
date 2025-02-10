@@ -6,28 +6,31 @@ import org.dreamteam.onlineshop.model.DTOs.UserDTO;
 import org.dreamteam.onlineshop.model.User;
 import org.dreamteam.onlineshop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 @Slf4j
 @Service
-
 public class UserServiceBean implements UserService {
 
     private final UserRepository userRepository;
     private final EntityMapper entityMapper;
+    private final PasswordEncoder passwordEncoder;  // Pridanie PasswordEncoder
 
     @Autowired
-    public UserServiceBean(UserRepository userRepository, EntityMapper entityMapper) {
+    public UserServiceBean(UserRepository userRepository, EntityMapper entityMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.entityMapper = entityMapper;
+        this.passwordEncoder = passwordEncoder;  // Inicializácia PasswordEncoder
     }
 
     @Override
     public void addUser(UserDTO userDTO) {
         User user = entityMapper.toUserEntity(userDTO);
+        // Hashovanie hesla pred uložením
+        user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
         userRepository.save(user);
     }
 
@@ -43,7 +46,8 @@ public class UserServiceBean implements UserService {
             existingUser.setUserName(updateUser.getUserName());
         }
         if (updateUser.getUserPassword() != null && !updateUser.getUserPassword().isBlank()) {
-            existingUser.setUserPassword(updateUser.getUserPassword());
+            // Hashovanie hesla pred uložením
+            existingUser.setUserPassword(passwordEncoder.encode(updateUser.getUserPassword()));
         }
         if (updateUser.getUserAddress() != null && !updateUser.getUserAddress().isBlank()) {
             existingUser.setUserAddress(updateUser.getUserAddress());
@@ -61,7 +65,7 @@ public class UserServiceBean implements UserService {
     @Override
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new IllegalArgumentException("User with id" + id + "does not exist");
+            throw new IllegalArgumentException("User with id " + id + " does not exist");
         }
         userRepository.deleteById(id);
     }
@@ -77,5 +81,4 @@ public class UserServiceBean implements UserService {
     public List<User> getUsers() {
         return userRepository.findAll();
     }
-
 }

@@ -1,4 +1,4 @@
-package org.dreamteam.onlineshop.controller.rest;
+package org.dreamteam.onlineshop.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

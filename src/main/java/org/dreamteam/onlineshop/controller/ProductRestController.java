@@ -1,4 +1,4 @@
-package org.dreamteam.onlineshop.controller.rest;
+package org.dreamteam.onlineshop.controller;
 
 import org.dreamteam.onlineshop.model.DTOs.ProductDTO;
 import org.dreamteam.onlineshop.model.Product;
@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/products")
@@ -32,6 +33,7 @@ public class ProductRestController {
         Product product = productService.addProduct(productDTO);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
+
 
     @PatchMapping("/update/{id}")
     @Operation(summary = "Aktualizuj produkt podla ID")

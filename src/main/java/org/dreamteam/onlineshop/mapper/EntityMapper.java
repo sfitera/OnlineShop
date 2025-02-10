@@ -27,7 +27,6 @@ public interface EntityMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "product", ignore = true)
-    @Mapping(target = "order", ignore = true)
     @Mapping(target = "itemPrice", ignore = true)
     OrderItem toOrderItemEntity(OrderItemDTO orderItemDTO);
 

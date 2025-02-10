@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/orderitem")
 @Tag(name = "Order Item Controller", description = "API na správu poloziek v objednavke")
+@CrossOrigin(origins = "http://localhost:5173/")
 public class OrderItemRestController {
 
     private final OrderItemService orderItemService;
@@ -22,10 +23,10 @@ public class OrderItemRestController {
         this.orderItemService = orderItemService;
     }
 
-    @PostMapping("/add/{orderId}")
+    @PostMapping("/add/")
     @Operation(summary = "Pridaj polozku")
-    public ResponseEntity<String> addOrderItem(@PathVariable Long orderId, @RequestBody OrderItemDTO orderItemDTO) {
-        orderItemService.addOrderItem(orderId, orderItemDTO);
+    public ResponseEntity<String> addOrderItem(@RequestBody OrderItemDTO orderItemDTO) {
+        orderItemService.addOrderItem(orderItemDTO);
         return new ResponseEntity<>("Order item added successfully", HttpStatus.CREATED);
     }
 
@@ -36,10 +37,10 @@ public class OrderItemRestController {
         return new ResponseEntity<>("Order item updated successfully", HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{orderId}/{orderItemId}")
+    @DeleteMapping("/delete/{orderItemId}")
     @Operation(summary = "Zmaz polozku podla ID")
-    public ResponseEntity<String> deleteOrderItem(@PathVariable Long orderId, @PathVariable Long orderItemId) {
-        orderItemService.deleteOrderItem(orderId, orderItemId);
+    public ResponseEntity<String> deleteOrderItem(@PathVariable Long orderItemId) {
+        orderItemService.deleteOrderItem(orderItemId);
         return new ResponseEntity<>("Order item deleted successfully", HttpStatus.OK);
     }
 

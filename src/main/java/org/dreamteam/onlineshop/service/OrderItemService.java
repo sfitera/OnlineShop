@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface OrderItemService {
 
-    void addOrderItem(Long orderId, OrderItemDTO orderItemDTO);
+    void addOrderItem(OrderItemDTO orderItemDTO);
 
     void updateOrderItem(Long orderItemId, int quantity);
 
-    void deleteOrderItem(Long orderId, Long orderItemId);
+    void deleteOrderItem(Long orderItemId);
 
     OrderItem getOrderItem(Long orderItemId);
 

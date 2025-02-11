@@ -43,14 +43,14 @@ public class DatabaseInitService {
             }
         }
 
-        Long adminCount = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM users WHERE user_role = 'ADMIN'", Long.class);
-        if (adminCount == null) {
-            adminCount = 0L;
-        }
-        if (adminCount == 0) {
-            jdbcTemplate.update("INSERT INTO users (user_name, user_password, user_email, user_address, user_role) VALUES (?, ?, ?, ?, ?)",
-                    "admin", "admin123", "admin@example.com", "Admin Address", "ADMIN");
-        }
+//        Long adminCount = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM users WHERE user_role = 'ADMIN'", Long.class);
+//        if (adminCount == null) {
+//            adminCount = 0L;
+//        }
+//        if (adminCount == 0) {
+//            jdbcTemplate.update("INSERT INTO users (user_name, user_password, user_email, user_address, user_role) VALUES (?, ?, ?, ?, ?)",
+//                    "admin", "admin123", "admin@example.com", "Admin Address", "ADMIN");
+//        }
     }
 }
 

@@ -3,6 +3,7 @@ package org.dreamteam.onlineshop.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.dreamteam.onlineshop.model.DTOs.UserDTO;
+import org.dreamteam.onlineshop.model.DTOs.UserResponseDTO;
 import org.dreamteam.onlineshop.model.User;
 import org.dreamteam.onlineshop.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -46,16 +47,16 @@ public class UserRestController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Získaj uzivatela podla ID")
-    public ResponseEntity<User> getUser(@PathVariable Long id){
-        User user = userService.getUser(id);  // Používame UserService na získanie používateľa podľa ID
+    public ResponseEntity<UserResponseDTO> getUser(@PathVariable Long id){
+        UserResponseDTO user = userService.getUser(id);  // Používame UserService na získanie používateľa podľa ID
         return user != null ? new ResponseEntity<>(user, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/")
     @Operation(summary = "Získaj zoznam všetkých uzivatelov")
-    public ResponseEntity<List<User>> getUsers(){
-        List<User> users = userService.getUsers();  // Používame UserService na získanie všetkých používateľov
+    public ResponseEntity<List<UserResponseDTO>> getUsers(){
+        List<UserResponseDTO> users = userService.getUsers();  // Používame UserService na získanie všetkých používateľov
         return users != null ? new ResponseEntity<>(users, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

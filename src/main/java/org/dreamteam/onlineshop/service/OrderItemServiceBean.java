@@ -35,12 +35,19 @@ public class OrderItemServiceBean implements OrderItemService {
     public void addOrderItem(OrderItemDTO orderItemDTO) {
         Product product = productRepository.findById(orderItemDTO.getProductId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
+        Optional<OrderItem> existingItem = orderItemRepository.findByProductId(product.getId());
 
-        OrderItem newOrderItem = entityMapper.toOrderItemEntity(orderItemDTO);
-        newOrderItem.setProduct(product);
-        newOrderItem.setItemPrice(newOrderItem.getQuantity() * product.getProductPrice());
-
-        orderItemRepository.save(newOrderItem);
+        if(existingItem.isPresent()) {
+            OrderItem orderItem = existingItem.get();
+            orderItem.setQuantity(orderItem.getQuantity() + orderItemDTO.getQuantity());
+            orderItem.setItemPrice(orderItem.getQuantity() * product.getProductPrice());
+            orderItemRepository.save(orderItem);
+        } else {
+            OrderItem newOrderItem = entityMapper.toOrderItemEntity(orderItemDTO);
+            newOrderItem.setProduct(product);
+            newOrderItem.setItemPrice(newOrderItem.getQuantity() * product.getProductPrice());
+            orderItemRepository.save(newOrderItem);
+        }
     }
 
     @Override

@@ -11,6 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 import java.util.ArrayList;
@@ -20,20 +21,22 @@ import java.util.List;
 @EnableJpaRepositories("org.dreamteam.onlineshop")
 public class OnlineShopApplication implements CommandLineRunner {
 
-//    private final UserRepository userRepository;
-//    private final ProductRepository productRepository;
-//    private final OrderRepository orderRepository;
-//    private final DatabaseInitService databaseInitService;
-//
-//    @Autowired
-//    public OnlineShopApplication(UserRepository userRepository, ProductRepository productRepository,
-//                                 OrderRepository orderRepository, DatabaseInitService databaseInitService) {
-//        this.userRepository = userRepository;
-//        this.productRepository = productRepository;
-//        this.orderRepository = orderRepository;
-//
-//        this.databaseInitService = databaseInitService;
-//    }
+    private final UserRepository userRepository;
+    private final ProductRepository productRepository;
+    private final OrderRepository orderRepository;
+    private final DatabaseInitService databaseInitService;
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public OnlineShopApplication(UserRepository userRepository, ProductRepository productRepository,
+                                 OrderRepository orderRepository, DatabaseInitService databaseInitService, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.productRepository = productRepository;
+        this.orderRepository = orderRepository;
+
+        this.databaseInitService = databaseInitService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(OnlineShopApplication.class, args);
@@ -42,7 +45,11 @@ public class OnlineShopApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        // databaseInitService.initializeDatabase();
+        //databaseInitService.initializeDatabase();
+        User user = new User("admin", passwordEncoder.encode("admin123"), "admin address", "admin@email.com");
+        user.setUserRole(UserRole.ADMIN);
+        userRepository.save(user);
+
 
     }
 

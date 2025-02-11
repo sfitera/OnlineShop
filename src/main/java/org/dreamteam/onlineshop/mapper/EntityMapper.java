@@ -17,7 +17,7 @@ public interface EntityMapper {
     @Mapping(target = "productAvailability", expression = "java(productDTO.getProductQuantity() > 0)")
     Product toProductEntity(ProductDTO productDTO);
 
-    UserDTO toUserDTO(User user);
+    UserResponseDTO toUserResponseDTO(User user);
 
     @Mapping(target = "id", ignore = true)
     User toUserEntity(UserDTO userDTO);

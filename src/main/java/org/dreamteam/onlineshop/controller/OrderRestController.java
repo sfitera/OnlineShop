@@ -15,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/orders")
 @Tag(name = "Order Controller", description = "API na správu objednavok")
+@CrossOrigin(origins = "http://localhost:5173/")
 public class OrderRestController {
 
     private final OrderService orderService;

@@ -6,6 +6,7 @@ import org.dreamteam.onlineshop.model.DTOs.OrderItemDTO;
 import org.dreamteam.onlineshop.model.Order;
 import org.dreamteam.onlineshop.model.OrderItem;
 import org.dreamteam.onlineshop.model.Product;
+import org.dreamteam.onlineshop.model.enums.OrderStatus;
 import org.dreamteam.onlineshop.repository.OrderItemRepository;
 import org.dreamteam.onlineshop.repository.OrderRepository;
 import org.dreamteam.onlineshop.repository.ProductRepository;
@@ -87,4 +88,14 @@ public class OrderItemServiceBean implements OrderItemService {
     public List<OrderItem> getAllOrderItems() {
         return orderItemRepository.findAll();
     }
+
+    public void clearCart(Long userId) {
+        List<Order> activeOrders = orderRepository.findByUserIdAndOrderStatus(userId, OrderStatus.CREATED);
+
+        for (Order order : activeOrders) {
+            orderItemRepository.deleteAll(order.getOrderItems());
+        }
+    }
+
+
 }

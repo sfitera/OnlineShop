@@ -52,7 +52,7 @@ public class UserServiceBean implements UserService, UserDetailsService {
         User updateUser = entityMapper.toUserEntity(userDTO);
 
         if (updateUser.getUsername() != null && !updateUser.getUsername().isBlank()) {
-            existingUser.setUserName(updateUser.getUsername());
+            existingUser.setUsername(updateUser.getUsername());
         }
         if (updateUser.getUserPassword() != null && !updateUser.getUserPassword().isBlank()) {
             existingUser.setUserPassword(passwordEncoder.encode(updateUser.getUserPassword()));
@@ -98,7 +98,7 @@ public class UserServiceBean implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> userOptional = userRepository.findUserByUserName(username);
+        Optional<User> userOptional = userRepository.findUserByUsername(username);
         if (userOptional.isEmpty()) {
             throw new UsernameNotFoundException("Username " + username + " does not exist");
         } else {
@@ -107,13 +107,14 @@ public class UserServiceBean implements UserService, UserDetailsService {
     }
     @Override
     public UserResponseDTO getUserByUsername(String username){
-        Optional<User> userOptional = userRepository.findUserByUserName(username);
+        Optional<User> userOptional = userRepository.findUserByUsername(username);
         if (userOptional.isEmpty()) {
             throw new UsernameNotFoundException("Username " + username + " does not exist");
         }
         User user = userOptional.get();
         UserResponseDTO response = new UserResponseDTO();
-        response.setUserName(user.getUsername());
+        response.setId(user.getId());
+        response.setUsername(user.getUsername());
         response.setUserEmail(user.getUserEmail());
         response.setUserAddress(user.getUserAddress());
         return response;
@@ -141,15 +142,18 @@ public class UserServiceBean implements UserService, UserDetailsService {
     }
 
     @Override
-    public void updatePassword(Long id, String currentPassword, String newPassword) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User with id " + id + " does not exist"));
-        if(!passwordEncoder.matches(currentPassword, user.getUserPassword())) {
-            throw new RuntimeException("Wrong password");
+    public void updatePassword(Long userId, String currentPassword, String newPassword) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (!passwordEncoder.matches(currentPassword, user.getUserPassword())) {
+            throw new RuntimeException("Nesprávne aktuálne heslo.");
         }
+
         user.setUserPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
     }
+
 
 
 }

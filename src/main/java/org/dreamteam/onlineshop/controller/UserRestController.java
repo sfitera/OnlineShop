@@ -80,12 +80,10 @@ public class UserRestController {
     @PatchMapping("/update-password")
     @Operation(summary = "Zmena hesla používateľa")
     public ResponseEntity<String> updatePassword(@RequestBody PasswordUpdateDTO passwordUpdateDTO) {
-        if (passwordUpdateDTO.getUserId() == null) {
-            return ResponseEntity.badRequest().body("User ID nesmie byť null");
-        }
         userService.updatePassword(passwordUpdateDTO.getUserId(), passwordUpdateDTO.getCurrentPassword(), passwordUpdateDTO.getNewPassword());
         return ResponseEntity.ok("Heslo bolo úspešne zmenené.");
     }
+
 
 
 

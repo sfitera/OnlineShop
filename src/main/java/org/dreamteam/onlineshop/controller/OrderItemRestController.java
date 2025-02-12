@@ -57,4 +57,12 @@ public class OrderItemRestController {
         List<OrderItem> orderItems = orderItemService.getAllOrderItems();
         return orderItems != null ? new ResponseEntity<>(orderItems, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @DeleteMapping("/clear-cart/{userId}")
+    @Operation(summary = "Vyprázdni košík po vytvorení objednávky")
+    public ResponseEntity<String> clearCart(@PathVariable Long userId) {
+        orderItemService.clearCart(userId);
+        return ResponseEntity.ok("Košík bol úspešne vyprázdnený.");
+    }
+
 }

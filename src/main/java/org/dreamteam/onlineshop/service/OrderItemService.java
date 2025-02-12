@@ -18,4 +18,5 @@ public interface OrderItemService {
 
     List<OrderItem> getAllOrderItems();
 
+    void clearCart(Long userId);
 }

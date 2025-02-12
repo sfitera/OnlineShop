@@ -24,7 +24,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String userName;
+    private String username;
     private String userPassword;
     private String userAddress;
     private String userEmail;
@@ -35,7 +35,7 @@ public class User implements UserDetails {
     private List<UserRole> userRoles = new ArrayList<>();
 
     public User(String userName, String userPassword, String userAddress, String userEmail) {
-        this.userName = userName;
+        this.username = userName;
         this.userPassword = userPassword;
         this.userAddress = userAddress;
         this.userEmail = userEmail;
@@ -62,7 +62,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return username;
     }
 
     @Override

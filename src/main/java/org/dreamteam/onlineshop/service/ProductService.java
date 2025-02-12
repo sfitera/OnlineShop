@@ -1,6 +1,7 @@
 package org.dreamteam.onlineshop.service;
 
 import org.dreamteam.onlineshop.model.DTOs.ProductDTO;
+import org.dreamteam.onlineshop.model.DTOs.UserResponseDTO;
 import org.dreamteam.onlineshop.model.Product;
 import org.dreamteam.onlineshop.model.enums.Category;
 
@@ -21,8 +22,14 @@ public interface ProductService {
 
     List<Product> getProductsByCategory(Category category);
 
+    List<Product> getProductsByPrice(Double price);
+
     List<Product> getProductsByAuthor(String author);
 
+    List<Product> getProductsByQuantity(Integer quantity);
+
     List<Product> getAllProducts();
+
+    boolean updateProductQuantity(Long id, int quantity);
 
 }

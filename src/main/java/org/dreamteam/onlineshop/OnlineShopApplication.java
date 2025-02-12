@@ -46,9 +46,9 @@ public class OnlineShopApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         //databaseInitService.initializeDatabase();
-        User user = new User("admin", passwordEncoder.encode("admin123"), "admin address", "admin@email.com");
-        user.setUserRole(UserRole.ADMIN);
-        userRepository.save(user);
+//        User user = new User("admin", passwordEncoder.encode("admin123"), "admin address", "admin@email.com");
+//        user.setUserRole(UserRole.ADMIN);
+//        userRepository.save(user);
 
 
     }

@@ -87,6 +87,15 @@ public class ProductServiceBean implements ProductService {
     }
 
     @Override
+    public List<Product> getProductsByPrice(Double price) {
+        List<Product> products = productRepository.findAllByProductPrice(price);
+        if (products.isEmpty()) {
+            throw new IllegalArgumentException("No products found of price: " + price);
+        }
+        return products;
+    }
+
+    @Override
     public List<Product> getProductsByAuthor(String author) {
         List<Product> products = productRepository.findAllByProductAuthorContainingIgnoreCase(author);
         if (products.isEmpty()) {
@@ -95,11 +104,31 @@ public class ProductServiceBean implements ProductService {
         return products;
     }
 
+    @Override
+    public List<Product> getProductsByQuantity(Integer quantity) {
+        List<Product> products = productRepository.findAllByProductQuantity(quantity);
+        if (products.isEmpty()) {
+            throw new IllegalArgumentException("No products found of price: " + quantity);
+        }
+        return products;
+    }
 
     @Override
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
+
+    public boolean updateProductQuantity(Long id, int quantity) {
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (productOptional.isPresent() && quantity >= 0) {
+            Product product = productOptional.get();
+            product.setProductQuantity(quantity);
+            productRepository.save(product);
+            return true;
+        }
+        return false;
+    }
+
 }
 
 

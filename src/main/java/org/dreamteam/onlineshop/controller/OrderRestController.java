@@ -60,7 +60,7 @@ public class OrderRestController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/order/{userId}")
     @Operation(summary = "Získaj zoznam všetkých produktov patriace uzivatelovi")
     public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable Long userId) {
         List<Order> order = orderService.getOrdersByUserId(userId);

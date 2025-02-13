@@ -35,7 +35,7 @@ public class Order {
         this.orderStatus = orderStatus;
     }
 
-    private double setTotalPrice(OrderItem orderItem) {
+    public double setTotalPrice(OrderItem orderItem) {
         double price = 0;
         int quantity = orderItem.getQuantity();
         price = quantity * orderItem.getItemPrice();

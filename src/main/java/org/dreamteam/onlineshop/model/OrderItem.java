@@ -22,7 +22,9 @@ public class OrderItem {
     private Product product;
     private int quantity;
     private double itemPrice;
-
+    @ManyToOne
+    @JsonIgnore
+    private Order order;
 
     public OrderItem(Product product, int quantity) {
         this.product = product;

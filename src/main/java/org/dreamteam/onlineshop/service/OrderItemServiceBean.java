@@ -6,6 +6,7 @@ import org.dreamteam.onlineshop.model.DTOs.OrderItemDTO;
 import org.dreamteam.onlineshop.model.Order;
 import org.dreamteam.onlineshop.model.OrderItem;
 import org.dreamteam.onlineshop.model.Product;
+import org.dreamteam.onlineshop.model.enums.OrderStatus;
 import org.dreamteam.onlineshop.repository.OrderItemRepository;
 import org.dreamteam.onlineshop.repository.OrderRepository;
 import org.dreamteam.onlineshop.repository.ProductRepository;
@@ -32,22 +33,28 @@ public class OrderItemServiceBean implements OrderItemService {
         this.entityMapper = entityMapper;
     }
 
-    public void addOrderItem(OrderItemDTO orderItemDTO) {
+    @Override
+    public OrderItem addOrderItem(OrderItemDTO orderItemDTO) {
         Product product = productRepository.findById(orderItemDTO.getProductId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
-        Optional<OrderItem> existingItem = orderItemRepository.findByProductId(product.getId());
 
-        if(existingItem.isPresent()) {
-            OrderItem orderItem = existingItem.get();
-            orderItem.setQuantity(orderItem.getQuantity() + orderItemDTO.getQuantity());
-            orderItem.setItemPrice(orderItem.getQuantity() * product.getProductPrice());
-            orderItemRepository.save(orderItem);
+        Optional<OrderItem> existingItem = orderItemRepository.findByProductId(product.getId());
+        OrderItem orderItem;
+
+        if (existingItem.isPresent()) {
+            orderItem = existingItem.get();
+            orderItem.setQuantity(orderItemDTO.getQuantity()); // ✅ Oprava: Nekumulujeme staré množstvo
         } else {
-            OrderItem newOrderItem = entityMapper.toOrderItemEntity(orderItemDTO);
-            newOrderItem.setProduct(product);
-            newOrderItem.setItemPrice(newOrderItem.getQuantity() * product.getProductPrice());
-            orderItemRepository.save(newOrderItem);
+            orderItem = entityMapper.toOrderItemEntity(orderItemDTO);
+            orderItem.setProduct(product);
+            orderItem.setQuantity(orderItemDTO.getQuantity());
         }
+
+        orderItem.setItemPrice(orderItem.getQuantity() * product.getProductPrice());
+        orderItem = orderItemRepository.save(orderItem);
+
+        orderItem.setProduct(product); // ✅ Zabezpečíme, že `product` nebude `null`
+        return orderItem;
     }
 
     @Override
@@ -58,9 +65,12 @@ public class OrderItemServiceBean implements OrderItemService {
 
         OrderItem orderItem = orderItemRepository.findById(orderItemId)
                 .orElseThrow(() -> new RuntimeException("OrderItem not found"));
+        log.info("🔄 Updating OrderItem ID: " + orderItemId + " New Quantity: " + quantity);
 
         if (quantity == 0) {
             orderItemRepository.delete(orderItem);
+            log.info("🗑️ OrderItem deleted: " + orderItemId);
+            return;
         } else {
             orderItem.setQuantity(quantity);
             orderItem.setItemPrice(quantity * orderItem.getProduct().getProductPrice());
@@ -68,13 +78,15 @@ public class OrderItemServiceBean implements OrderItemService {
         }
     }
 
+
     @Override
     public void deleteOrderItem(Long orderItemId) {
+        log.info("🗑️ Odstraňujem položku s ID: " + orderItemId);
         OrderItem orderItem = orderItemRepository.findById(orderItemId)
-                .orElseThrow(() -> new RuntimeException("OrderItem not found"));
+                .orElseThrow(() -> new RuntimeException("❌ OrderItem not found: " + orderItemId));
 
         orderItemRepository.delete(orderItem);
-
+        log.info("✅ Položka úspešne odstránená: " + orderItemId);
     }
 
     @Override
@@ -86,5 +98,16 @@ public class OrderItemServiceBean implements OrderItemService {
     @Override
     public List<OrderItem> getAllOrderItems() {
         return orderItemRepository.findAll();
+    }
+
+    public void clearCart(Long userId) {
+        List<Order> activeOrders = orderRepository.findByUserIdAndOrderStatus(userId, OrderStatus.CREATED);
+
+        for (Order order : activeOrders) {
+            orderItemRepository.deleteAll(order.getOrderItems());
+        }
+    }
+    public List<OrderItem> getCartItems() {
+        return orderItemRepository.findValidUnorderedItems();
     }
 }

@@ -89,4 +89,32 @@ public class ProductRestController {
         return products != null ? new ResponseEntity<>(products, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @PatchMapping("/update-quantity/{id}")
+    @Operation(summary = "Aktualizuj množstvo produktu podľa ID")
+    public ResponseEntity<String> updateProductQuantity(@PathVariable Long id, @RequestParam int quantity) {
+        boolean updated = productService.updateProductQuantity(id, quantity);
+        if (updated) {
+            return new ResponseEntity<>("Product quantity updated successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Product not found or invalid quantity", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/price/{price}")
+    @Operation(summary = "Získaj zoznam všetkých produktov podla ceny")
+    public ResponseEntity<List<Product>> getProductsByPrice(@PathVariable Double price) {
+        List<Product> productsByPrice = productService.getProductsByPrice(price);
+        return productsByPrice != null ? new ResponseEntity<>(productsByPrice, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/quntity/{quantity}")
+    @Operation(summary = "Získaj zoznam všetkých produktov podla kvantity")
+    public ResponseEntity<List<Product>> getProductsByQuantity(@PathVariable Integer quantity) {
+        List<Product> productsByQuantity = productService.getProductsByQuantity(quantity);
+        return productsByQuantity != null ? new ResponseEntity<>(productsByQuantity, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 }

@@ -5,6 +5,7 @@ import org.dreamteam.onlineshop.mapper.EntityMapper;
 import org.dreamteam.onlineshop.model.DTOs.UserDTO;
 import org.dreamteam.onlineshop.model.DTOs.UserResponseDTO;
 import org.dreamteam.onlineshop.model.User;
+import org.dreamteam.onlineshop.model.enums.UserRole;
 import org.dreamteam.onlineshop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -36,6 +38,9 @@ public class UserServiceBean implements UserService, UserDetailsService {
     public void addUser(UserDTO userDTO) {
         User user = entityMapper.toUserEntity(userDTO);
         user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
+        if (user.getUserRoles() == null || user.getUserRoles().isEmpty()) {
+            user.setUserRoles(List.of(UserRole.USER));
+        }
         userRepository.save(user);
     }
 
@@ -48,7 +53,7 @@ public class UserServiceBean implements UserService, UserDetailsService {
         User updateUser = entityMapper.toUserEntity(userDTO);
 
         if (updateUser.getUsername() != null && !updateUser.getUsername().isBlank()) {
-            existingUser.setUserName(updateUser.getUsername());
+            existingUser.setUsername(updateUser.getUsername());
         }
         if (updateUser.getUserPassword() != null && !updateUser.getUserPassword().isBlank()) {
             existingUser.setUserPassword(passwordEncoder.encode(updateUser.getUserPassword()));
@@ -94,11 +99,68 @@ public class UserServiceBean implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> userOptional = userRepository.findUserByUserName(username);
+        Optional<User> userOptional = userRepository.findUserByUsername(username);
         if (userOptional.isEmpty()) {
             throw new UsernameNotFoundException("Username " + username + " does not exist");
         } else {
             return userOptional.get();
         }
     }
+    @Override
+    public UserResponseDTO getUserByUsername(String username){
+        Optional<User> userOptional = userRepository.findUserByUsername(username);
+        if (userOptional.isEmpty()) {
+            throw new UsernameNotFoundException("Username " + username + " does not exist");
+        }
+        User user = userOptional.get();
+        UserResponseDTO response = new UserResponseDTO();
+        response.setId(user.getId());
+        response.setUsername(user.getUsername());
+        response.setUserEmail(user.getUserEmail());
+        response.setUserAddress(user.getUserAddress());
+        return response;
+    }
+
+
+
+    @Override
+    public UserResponseDTO loginUser(String email, String password) {
+        Optional<User> userOptional = userRepository.findUserByUserEmail(email);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            if (passwordEncoder.matches(password, user.getUserPassword())) {
+                return entityMapper.toUserResponseDTO(user);
+            } else {
+                log.warn("Chybné heslo pre používateľa: " + email);
+                throw new RuntimeException("Nesprávne heslo.");
+            }
+        } else {
+            log.warn("Používateľ s emailom " + email + " neexistuje.");
+            throw new RuntimeException("Používateľ neexistuje.");
+        }
+    }
+
+    @Override
+    public void updatePassword(Long userId, String currentPassword, String newPassword) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (!passwordEncoder.matches(currentPassword, user.getUserPassword())) {
+            throw new RuntimeException("Nesprávne aktuálne heslo.");
+        }
+
+        user.setUserPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
+    @Override
+    public List<String> getUserRoles(String username) {
+        User user = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("Username " + username + " does not exist"));
+        return user.getUserRoles().stream().map(Enum::name).collect(Collectors.toList());
+    }
+
+
 }

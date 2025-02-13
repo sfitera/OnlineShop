@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface OrderItemService {
 
-    void addOrderItem(OrderItemDTO orderItemDTO);
+    OrderItem addOrderItem(OrderItemDTO orderItemDTO);
 
     void updateOrderItem(Long orderItemId, int quantity);
 
@@ -19,4 +19,6 @@ public interface OrderItemService {
     List<OrderItem> getAllOrderItems();
 
     void clearCart(Long userId);
+
+    List<OrderItem> getCartItems();
 }

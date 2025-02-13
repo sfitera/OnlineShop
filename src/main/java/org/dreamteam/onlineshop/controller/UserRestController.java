@@ -63,11 +63,17 @@ public class UserRestController {
     }
 
     @GetMapping("/user-name/{username}")
-    @Operation(summary = "Získaj uzivatela podla ID")
-    public ResponseEntity<UserResponseDTO> getUserByUsername(@PathVariable String username){
+    @Operation(summary = "Získaj užívateľa podľa mena")
+    public ResponseEntity<UserResponseDTO> getUserByUsername(@PathVariable String username) {
         UserResponseDTO user = userService.getUserByUsername(username);
-        return user != null ? new ResponseEntity<>(user, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<String> roles = userService.getUserRoles(username);
+        user.setRoles(roles);
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping("/login")

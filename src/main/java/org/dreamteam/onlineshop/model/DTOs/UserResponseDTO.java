@@ -1,6 +1,9 @@
 package org.dreamteam.onlineshop.model.DTOs;
 
 import lombok.Data;
+import lombok.Setter;
+
+import java.util.List;
 
 @Data
 public class UserResponseDTO {
@@ -8,4 +11,7 @@ public class UserResponseDTO {
     private String username;
     private String userAddress;
     private String userEmail;
+    @Setter
+    private List<String> roles;
+
 }

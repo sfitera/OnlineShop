@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -154,6 +155,12 @@ public class UserServiceBean implements UserService, UserDetailsService {
         userRepository.save(user);
     }
 
+    @Override
+    public List<String> getUserRoles(String username) {
+        User user = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("Username " + username + " does not exist"));
+        return user.getUserRoles().stream().map(Enum::name).collect(Collectors.toList());
+    }
 
 
 }

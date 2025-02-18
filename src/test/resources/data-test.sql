@@ -131,4 +131,47 @@ VALUES ('Syn', 15.99, 30, TRUE, 'images/Syn.jpeg', 'DETECTIVE', 'Jo Nesbo',
        ('Cierny kocur', 77.77, 0, FALSE, 'images/Cierny kocur.jpeg', 'HORROR', 'Edgar Allan Poe', 'Hororová poviedka'),
 
        ('Harry Potter a ohniva casa', 73.99, 23, TRUE, 'images/Harry Potter a ohniva casa.jpeg', 'FANTASY',
-        'J.K.Rowlingová', 'Štvrtý príbeh Harryho Pottera');
+        'J.K.Rowlingová', 'Štvrtý príbeh Harryho Pottera'),
+
+       ('Príbeh umenia', 29.99, 15, TRUE, 'images/Príbeh umenia.jpg', 'ART', 'E.H. Gombrich',
+        'Jedna z najpopulárnejších kníh o dejinách umenia od antiky po modernu.'),
+       ('Ways of Seeing', 19.99, 10, TRUE, 'images/Ways of Seeing.jpg', 'ART', 'John Berger',
+        'Kultová kniha o tom, ako vnímame umenie v modernom svete.'),
+       ('Steal Like an Artist', 14.99, 0, FALSE, 'images/Steal Like an Artist.jpg', 'ART', 'Austin Kleon',
+        'Inšpiratívna kniha o kreativite a umení v digitálnom veku.'),
+
+       ('Sapiens:Stručná história ľudstva', 24.99, 12, TRUE, 'images/Sapiens.jpg', 'HISTORY', 'Yuval Noah Harari',
+        'Revolučná kniha o histórii ľudstva od doby kamennej po modernú éru.'),
+       ('Osudy ľudských spoločností', 22.99, 0, FALSE, 'images/Osudy ľudských spoločností.jpg', 'HISTORY', 'Jared Diamond',
+        'Skúma, prečo sa niektoré civilizácie vyvinuli rýchlejšie ako iné.'),
+       ('Hedvábné stezky', 21.99, 10, TRUE, 'images/Hedvábné stezky.jpg', 'HISTORY', 'Peter Frankopan',
+        'História sveta z pohľadu obchodných ciest medzi Východom a Západom.'),
+
+       ('The Girl with the Dragon Tattoo', 18.99, 14, TRUE, 'images/dragon_tattoo.jpg', 'MYSTERY', 'Stieg Larsson',
+        'Napínavý thriller s hackerom Lisbeth Salander a novinárom Mikaelom Blomkvistom.'),
+       ('Gone Girl', 16.99, 18, TRUE, 'images/gone_girl.jpg', 'MYSTERY', 'Gillian Flynn',
+        'Temný psychologický triler o zmiznutí ženy a tajomstvách manželstva.'),
+       ('Da Vinciho kód', 19.99, 20, TRUE, 'images/Da Vinciho kod.jpg', 'MYSTERY', 'Dan Brown',
+        'Klasický detektívny triler s profesorom Langdonom a tajomstvami kresťanstva.'),
+
+       ('Stručná história času', 20.99, 15, TRUE, 'images/Stručná história času.jpg', 'SCIENCE', 'Stephen Hawking',
+        'Populárno-vedecká kniha o čiernych dierach, vesmíre a teórii relativity.'),
+       ('Sebecký gén', 17.99, 0, FALSE, 'images/Sebecký gén.jpg', 'SCIENCE', 'Richard Dawkins',
+        'Známa teória o evolúcii a genetike vysvetlená jasne a pútavo.'),
+       ('Cosmos', 25.99, 12, TRUE, 'images/cosmos.jpg', 'SCIENCE', 'Carl Sagan',
+        'Priekopnícka kniha o vesmíre, planétach a vedeckom poznaní.'),
+
+       ('Dune', 23.99, 15, TRUE, 'images/Duna.jpg', 'SCIFI', 'Frank Herbert',
+        'Klasický sci-fi román o púštnej planéte Arrakis a intrigách okolo korenia.'),
+       ('Neuromancer', 18.99, 10, TRUE, 'images/Neuromancer.jpg', 'SCIFI', 'William Gibson',
+        'Kyberpunková klasika, ktorá predpovedala internet a virtuálnu realitu.'),
+       ('Stopárov sprievodca po galaxii', 14.99, 20, TRUE, 'images/Stopárov sprievodca po galaxii.jpg', 'SCIFI', 'Douglas Adams',
+        'Humorná sci-fi séria o dobrodružstvách Arthura Denta vo vesmíre.'),
+
+
+       ('Do divociny', 15.99, 0, FALSE, 'images/Do divociny.jpg', 'TRAVEL', 'Jon Krakauer',
+        'Skutočný príbeh muža, ktorý opustil civilizáciu a odišiel do Aljašky.'),
+       ('The Art of Travel', 16.99, 8, TRUE, 'images/The Art of Travel.jpg', 'TRAVEL', 'Alain de Botton',
+        'Filozofická kniha o tom, ako cestovanie ovplyvňuje náš život.'),
+       ('In Patagonia', 19.99, 10, TRUE, 'images/In Patagonia.jpg', 'TRAVEL', 'Bruce Chatwin',
+        'Cestopis o legendárnom a divokom regióne Južnej Ameriky.');

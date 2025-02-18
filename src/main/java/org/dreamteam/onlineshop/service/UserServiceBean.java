@@ -64,8 +64,8 @@ public class UserServiceBean implements UserService, UserDetailsService {
         if (updateUser.getUserEmail() != null && !updateUser.getUserEmail().isBlank()) {
             existingUser.setUserEmail(updateUser.getUserEmail());
         }
-        if (updateUser.getUserRoles() != null) {
-            existingUser.setUserRoles(updateUser.getUserRoles());
+        if (updateUser.getUserRoles() != null && !updateUser.getUserRoles().isEmpty()) {
+            existingUser.setUserRoles(new ArrayList<>(updateUser.getUserRoles())); // ✅ Uložíme všetky roly
         }
 
         userRepository.save(existingUser);
@@ -91,8 +91,11 @@ public class UserServiceBean implements UserService, UserDetailsService {
     public List<UserResponseDTO> getUsers() {
         List<User> users = userRepository.findAll();
         List<UserResponseDTO> userResponseDTOS = new ArrayList<>();
+
         for (User user : users) {
-            userResponseDTOS.add(entityMapper.toUserResponseDTO(user));
+            UserResponseDTO dto = entityMapper.toUserResponseDTO(user);
+            dto.setUserRoles(user.getUserRoles().stream().map(Enum::name).collect(Collectors.toList())); // ✅ Roly sa správne nastavia
+            userResponseDTOS.add(dto);
         }
         return userResponseDTOS;
     }
@@ -107,20 +110,20 @@ public class UserServiceBean implements UserService, UserDetailsService {
         }
     }
     @Override
-    public UserResponseDTO getUserByUsername(String username){
+    public UserResponseDTO getUserByUsername(String username) {
         Optional<User> userOptional = userRepository.findUserByUsername(username);
         if (userOptional.isEmpty()) {
             throw new UsernameNotFoundException("Username " + username + " does not exist");
         }
         User user = userOptional.get();
-        UserResponseDTO response = new UserResponseDTO();
-        response.setId(user.getId());
-        response.setUsername(user.getUsername());
-        response.setUserEmail(user.getUserEmail());
-        response.setUserAddress(user.getUserAddress());
+
+        UserResponseDTO response = entityMapper.toUserResponseDTO(user);
+
+        // ✅ Opravené - vždy pridáme roly
+        response.setUserRoles(user.getUserRoles().stream().map(Enum::name).collect(Collectors.toList()));
+
         return response;
     }
-
 
 
     @Override

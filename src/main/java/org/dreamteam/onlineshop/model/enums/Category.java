@@ -14,7 +14,7 @@ public enum Category {
     POETRY("Poetry"),
     ROMANCE("Romance"),
     SCIENCE("Science"),
-    SCIENCE_FICTION("Science Fiction"),
+    SCIFI("Scifi"),
     TRAVEL("Travel");
 
     private final String displayName;

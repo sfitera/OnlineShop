@@ -32,9 +32,9 @@ public class OrderRestController {
     }
 
     @PatchMapping("/update/{orderId}")
-    @Operation(summary = "Aktualizuj stav objednavky podla ID")
-    public ResponseEntity<String> updateOrderStatus(@PathVariable Long orderId, @RequestParam OrderStatus orderStatus) {
-        orderService.updateOrderStatus(orderId, orderStatus);
+    @Operation(summary = "Aktualizuj stav objednávky podľa ID")
+    public ResponseEntity<String> updateOrderStatus(@PathVariable Long orderId, @RequestBody OrderDTO orderDTO) {
+        orderService.updateOrderStatus(orderId, orderDTO.getOrderStatus());
         return new ResponseEntity<>("Order updated successfully", HttpStatus.OK);
     }
 
@@ -62,10 +62,14 @@ public class OrderRestController {
     }
 
     @GetMapping("/order/{userId}")
-    @Operation(summary = "Získaj zoznam všetkých produktov patriace uzivatelovi")
-    public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable Long userId) {
-        List<Order> order = orderService.getOrdersByUserId(userId);
-        return order != null ? new ResponseEntity<>(order, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @Operation(summary = "Získaj objednávky pre konkrétneho používateľa")
+    public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable Long userId, @RequestHeader("Authorization") String token) {
+        if (token == null || token.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        List<Order> orders = orderService.getOrdersByUserId(userId);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
+
 }

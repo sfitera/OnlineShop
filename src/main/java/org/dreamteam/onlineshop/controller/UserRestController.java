@@ -71,7 +71,7 @@ public class UserRestController {
         }
 
         List<String> roles = userService.getUserRoles(username);
-        user.setRoles(roles);
+        user.setUserRoles(roles);
 
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -79,9 +79,16 @@ public class UserRestController {
     @PostMapping("/login")
     @Operation(summary = "Prihlásenie užívateľa")
     public ResponseEntity<UserResponseDTO> loginUser(@RequestBody LoginRequestDTO loginRequest) {
-        UserResponseDTO userResponseDTO = userService.loginUser(loginRequest.getEmail(), loginRequest.getPassword());
-        return userResponseDTO != null ? ResponseEntity.ok(userResponseDTO) : ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        UserResponseDTO userResponseDTO = userService.loginUser(loginRequest.getUsername(), loginRequest.getPassword());
+
+        // ✅ Opravené - Overíme a nastavíme roly
+        if (userResponseDTO != null && userResponseDTO.getUserRoles() == null) {
+            userResponseDTO.setUserRoles(List.of("USER"));
+        }
+
+        return ResponseEntity.ok(userResponseDTO);
     }
+
 
     @PatchMapping("/update-password")
     @Operation(summary = "Zmena hesla používateľa")

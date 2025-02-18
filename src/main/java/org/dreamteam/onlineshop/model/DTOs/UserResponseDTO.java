@@ -12,6 +12,6 @@ public class UserResponseDTO {
     private String userAddress;
     private String userEmail;
     @Setter
-    private List<String> roles;
+    private List<String> userRoles;
 
 }

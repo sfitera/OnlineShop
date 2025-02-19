@@ -57,7 +57,7 @@ public class OrderServiceBean implements OrderService {
             OrderItem orderItem = new OrderItem(product, itemDto.getQuantity());
             order.addOrderItem(orderItem);
         }
-
+        order.recalculateTotalPrice();
         return orderRepository.save(order);
     }
 

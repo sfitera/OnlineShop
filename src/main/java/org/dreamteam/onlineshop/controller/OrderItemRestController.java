@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.dreamteam.onlineshop.model.DTOs.OrderItemDTO;
 import org.dreamteam.onlineshop.model.OrderItem;
+import org.dreamteam.onlineshop.model.Product;
 import org.dreamteam.onlineshop.repository.OrderItemRepository;
 import org.dreamteam.onlineshop.service.OrderItemService;
 import org.springframework.http.HttpStatus;
@@ -39,9 +40,13 @@ public class OrderItemRestController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        // ✅ Vrátime celý objekt `OrderItem`, aby frontend vedel vykresliť produkt
+        // 🔥 Uistíme sa, že sa vráti celý objekt produktu, nie len ID
+        Product fullProduct = addedItem.getProduct();
+        addedItem.setProduct(fullProduct);
+
         return new ResponseEntity<>(addedItem, HttpStatus.CREATED);
     }
+
 
     @PatchMapping("/update/{orderItemId}")
     @Operation(summary = "Aktualizuj položku podľa ID")

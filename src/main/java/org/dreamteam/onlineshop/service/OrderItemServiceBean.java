@@ -100,6 +100,7 @@ public class OrderItemServiceBean implements OrderItemService {
         return orderItemRepository.findAll();
     }
 
+    @Override
     public void clearCart(Long userId) {
         List<Order> activeOrders = orderRepository.findByUserIdAndOrderStatus(userId, OrderStatus.CREATED);
 
@@ -107,7 +108,13 @@ public class OrderItemServiceBean implements OrderItemService {
             orderItemRepository.deleteAll(order.getOrderItems());
         }
     }
+    @Override
     public List<OrderItem> getCartItems() {
-        return orderItemRepository.findValidUnorderedItems();
+        return orderItemRepository.findAll().stream()
+                .filter(item -> item.getProduct() != null) // 🔥 Odstránime objednávky bez produktov
+                .filter(item -> item.getProduct().getProductPrice() > 0) // 🔥 Odstránime produkty s cenou 0
+                .toList();
     }
+
+
 }
